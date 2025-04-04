@@ -1,22 +1,41 @@
+using Infrastructure.Persistence;
+using Infrastructure.Persistence.Context;
+using Infrastructure.Persistence.Seed;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddInfrastructurePersistenceService(builder.Configuration);
 
 var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+//Seed Data command `dotnet run seed`
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    if (args.Contains("seed"))
+    {
+        var userContext = services.GetRequiredService<UserContext>();
+        SeedData.Seed(userContext);
+        Console.WriteLine("✅ Seeding complete!");
+    }
+    else
+    {
+        app.Run();
+    }
 }
 
 app.UseHttpsRedirection();
