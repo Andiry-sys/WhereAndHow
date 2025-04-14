@@ -1,6 +1,7 @@
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Seed;
+using Infrastructure.Service;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructurePersistenceService(builder.Configuration);
+builder.Services.AddInfrastructureService();
 
 var app = builder.Build();
 

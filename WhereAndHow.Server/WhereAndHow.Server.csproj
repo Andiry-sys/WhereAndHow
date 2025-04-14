@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure.Persistence\Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\Infrastructure.Service\Infrastructure.Service.csproj" />
     <ProjectReference Include="..\whereandhow.client\whereandhow.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
