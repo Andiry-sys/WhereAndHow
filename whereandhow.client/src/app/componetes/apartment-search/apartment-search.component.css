@@ -1,0 +1,83 @@
+.btn-primary {
+  font-size: 15px;
+  background-color: #333;
+  border-color: #333;
+}
+.btn-primary:hover {
+  background-color: #222;
+  border-color: #222;
+}
+.outer {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('public/backgroundMAIN.jpg');
+  background-repeat: repeat;
+}
+
+.panel-heading{
+  text-align: center;
+  margin-bottom: 10px;
+  color: white;
+}
+.form-group{
+  color: white;
+}
+.form-select{
+  color: white;
+  background: rgba(33, 37, 41, 0.93);
+
+}
+
+#forget{
+  min-width: 100px;
+  margin-left: auto;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover{
+  text-decoration: none;
+}
+
+.form-inline label{
+  padding-left: 10px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.btn{
+  margin-top: 20px;
+  border-radius: 15px;
+}
+
+.panel {
+  min-height: 380px;
+  border-radius: 12px;
+  margin-top: 100px;
+  margin-bottom: 100px;
+
+}
+
+.input-field{
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  color: #4343ff;
+}
+
+.input-field.error{
+  border: 1px solid red;
+  color: red;
+}
+
+input[type='email'],input[type='password'],input[type='text']{
+  border: none;
+  outline: none;
+  box-shadow: none;
+  width: 100%;
+  background: rgba(33, 37, 41, 0.93);
+}
+

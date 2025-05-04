@@ -1,0 +1,40 @@
+<div class="outer">
+  <div class="apartment-list">
+      <div *ngFor="let apartment of apartments" class="apartment-item">
+        <div class="apartment-details">
+          <h3 class="apartment-name">
+              {{ apartment.apartamentName }}
+          </h3>
+          <div class="apartment-images">
+            <carousel>
+              <slide *ngFor="let images of apartment.photos">
+                <img
+                  src="{{ getCompleteImageUrl(images.photoImagePath) }}"
+                  alt="Apartment Image"
+                  height="300px"
+                  width="300px"
+                />
+              </slide>
+            </carousel>
+          </div>
+
+          <p class="apartment-price"  >
+            Ціна за добу: {{ apartment.apartamentPrice }} ₴
+          </p>
+          <p class="apartment-type">
+            Кількість кімнат: {{ apartment.apartamentTypeRoom }}
+          </p>
+          <p class="apartment-address">Місто: {{ apartment.addressCity }}</p>
+          <a [routerLink]="['/current-apartament']"
+             [queryParams]="{ id: apartment.id }"
+             class="btn btn-primary btn-block mt-4 w-100">Додаткова Інформація</a>
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>

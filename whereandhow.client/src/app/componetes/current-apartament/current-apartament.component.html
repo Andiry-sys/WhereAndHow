@@ -1,0 +1,63 @@
+<div class="outer">
+<div class="container">
+  <div class="row">
+    <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4 offset-md-3">
+      <div class="panel border bg-dark">
+        <div class="panel-heading">
+          <h3 class="t-3 font-weight-bold">{{ apartament.apartamentName }}</h3>
+          <div class="panel-body p-3">
+            <div class="apartment-images">
+              <carousel >
+                <slide *ngFor="let images of apartament.photos">
+                  <img src="{{ getCompleteImageUrl(images.photoImagePath) }}" alt="Apartment Image" height="300px" width="500px">
+                </slide>
+              </carousel>
+
+            </div>
+          </div>
+          <p class="card-text">
+            <strong>Ціна за добу:</strong> {{ apartament.apartamentPrice }} ₴
+          </p>
+          <p class="card-text">
+            <strong>Тип помешкання:</strong> {{ apartament.apartamentTypeRoom }}
+          </p>
+          <p class="card-text">
+            <strong>Опис:</strong> {{apartament.description}}
+          </p>
+          <p class="card-text">
+            <strong>Місто:</strong> {{ apartament.addressCity }}
+          </p>
+
+          <p class="card-text">
+            <strong>Адреса:</strong> {{ apartament.addressStreet }},
+            {{ apartament.addressNumberHouse }}
+          </p>
+          <div class="form-control">
+            <label for="checkInDate">Дата в'їзду:</label>
+            <input
+              type="date"
+              id="checkInDate"
+              class="form-control"
+              [(ngModel)]="order.CheckInDate"
+              name="checkInDate"
+              required
+            />
+            <label for="checkOutDate">Дата виїзду:</label>
+            <input
+              type="date"
+              id="checkOutDate"
+              class="form-control"
+              name="checkOutDate"
+              [(ngModel)]="order.CheckOutDate"
+            />
+          </div>
+          <br/>
+          <button (click)="orderApartament()" class="btn btn-primary">
+            Замовити помешкання
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,53 @@
+<div class="outer">
+  <div class="container">
+    <div class="row">
+      <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4 offset-md-3">
+        <div class="panel border bg-dark">
+          <div class="panel-heading">
+            <h3 class="pt-3 font-weight-bold">Логін</h3>
+          </div>
+          <div class="panel-body p-3">
+            <form [formGroup]="loginForm">
+              <div class="form-group pt-3">
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <span class="fa fa-envelope-o p-2" aria-hidden="true"></span>
+                    <input formControlName="email" type="email" placeholder="Електронна скринька" required />
+                  </div>
+                  <div class="form-text text-danger" *ngIf="email.errors?.['required'] && email.touched">
+                    Введіть почту
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group pt-3">
+                <div class="input-field">
+                  <span class="fa fa-lock p-2"></span>
+                  <input [type]="type" formControlName="password" type="password" placeholder="Пароль" required />
+                  <span (click)="hideShowPass()" class="fa {{eyeIcon}}"></span>
+                </div>
+                <div class="form-text text-danger" *ngIf="password.errors?.['required'] && password.touched">
+                  Введіть пароль
+                </div>
+
+              </div>
+
+              <button
+                (click)="onLogin()"
+                type="submit"
+                class="btn btn-primary btn-block mt-4 w-100"
+              >
+                Вхід
+              </button>
+
+              <div class="text-center pt-4 text-white">
+                Немає акаунту?
+                <a id="forget" routerLink="/register">Реєстрація</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

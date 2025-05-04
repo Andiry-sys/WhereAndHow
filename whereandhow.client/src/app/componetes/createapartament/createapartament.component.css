@@ -1,0 +1,97 @@
+.btn-primary {
+  font-size: 15px;
+  background-color: #333;
+  border-color: #333;
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #222;
+  border-color: #222;
+}
+.outer {
+  size: 100hv;
+  background-image: url('public/backgroundMAIN.jpg');
+  background-repeat: repeat;
+}
+.form-group{
+  color: white;
+}
+
+.panel-heading{
+  text-align: center;
+  margin-bottom: 10px;
+  color: white;
+}
+.form-control{
+  background: rgba(33, 37, 41, 0.93);;
+  color: white;
+}
+.form-group{
+  color: white;
+}
+.form-select{
+  color: white;
+  background: rgba(33, 37, 41, 0.93);
+
+}
+
+
+a:hover{
+  text-decoration: none;
+}
+
+.form-inline label{
+  padding-left: 10px;
+  margin: 0;
+  cursor: pointer;
+
+}
+
+.btn{
+  margin-top: 20px;
+  border-radius: 15px;
+}
+
+.panel {
+  min-height: 380px;
+  border-radius: 12px;
+  margin-top: 100px;
+  margin-bottom: 100px;
+
+}
+
+.input-field{
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  color:white;
+
+}
+
+.input-field.error{
+  border: 1px solid red;
+  color: red;
+}
+
+input[type='email'],input[type='password'],input[type='text']{
+  border: none;
+  outline: none;
+  box-shadow: none;
+  width: 100%;
+  color: white;
+  background: rgba(33, 37, 41, 0.93);
+}
+
+.custom-select {
+  color: white;
+  background-color: rgba(33, 37, 41, 0.93);
+  border: 1px solid #ddd;
+}
+
+.custom-select option {
+  color: black; /* Set the font color for the option */
+  background-color: white; /* Set the background color for the option */
+}

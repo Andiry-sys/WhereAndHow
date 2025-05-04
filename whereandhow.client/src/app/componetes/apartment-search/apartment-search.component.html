@@ -1,0 +1,83 @@
+<div class="outer">
+  <div class="container">
+    <div class="row">
+      <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4 offset-md-3">
+        <div class="panel border bg-dark">
+          <div class="panel-heading">
+            <h3 class="pt-3 font-weight-bold">Пошук помешкання</h3>
+          </div>
+          <div class="panel-body p-3">
+            <form
+              [formGroup]="searchForm"
+              (ngSubmit)="onSubmit()"
+              enctype="multipart/form-data"
+            >
+              <div class="form-group pt-3">
+                <label for="name">Назва помешкання:</label> <br />
+                <div class="input-field">
+                  <input
+                    id="name"
+                    formControlName="name"
+                    type="text"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group pt-3">
+                <div class="form-inline">
+                  <span class="" aria-hidden="true"></span>
+                  <label for="typeRoom">Тип помешкання: </label>
+                  <br />
+                  <select
+                    class="form-select bg-dark"
+                    id="typeRoom"
+                    [(ngModel)]="searchApartament.typeRoom"
+                    formControlName="typeRoom"
+                  >
+                    <option *ngFor="let type of apartmentTypes" [value]="type">
+                      {{ type }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <ng5-slider
+                  formControlName="price"
+                  [(value)]="searchApartament.minValue"
+                  [(highValue)]="searchApartament.maxValue"
+                  [options]="sliderOptions"
+                ></ng5-slider>
+              </div>
+
+              <div class="form-group pt-3">
+                <label for="location">Місто:</label> <br />
+                <div class="input-field">
+                  <input
+                    formControlName="city"
+                    type="text"
+                    id="location"
+                    [(ngModel)]="searchApartament.city"
+                    required
+                  />
+                </div>
+              </div>
+              <br />
+
+              <div>
+                <button
+                  (click)="onSubmit()"
+                  type="submit"
+                  class="btn btn-primary btn-block mt-4 w-100"
+                >
+                  Пошук
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

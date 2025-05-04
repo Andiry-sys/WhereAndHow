@@ -1,0 +1,44 @@
+.outer {
+  width: auto;
+  background-image: url('public/backgroundMAIN.jpg');
+  background-repeat: repeat;
+}
+
+.panel-heading{
+  text-align: center;
+  margin-bottom: 10px;
+
+}
+.card-text{
+  color: white;
+}
+.panel-heading{
+  color: white;
+}
+.form-control {
+  background-color: rgb(45, 52, 61);
+  color: white;
+}
+
+
+.btn-primary {
+  font-size: 15px;
+  background-color: #333;
+  border-color: #333;
+}
+.btn-primary:hover {
+  background-color: #222;
+  border-color: #222;
+}
+
+.panel {
+  min-height: 380px;
+  border-radius: 12px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background: rgba(33, 37, 41, 0.93);
+
+}
+
+
+

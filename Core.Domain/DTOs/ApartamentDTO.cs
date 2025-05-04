@@ -1,4 +1,6 @@
-﻿namespace Core.Domain.DTOs;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Core.Domain.DTOs;
 
 public class ApartamentDTO
 {
@@ -8,4 +10,6 @@ public class ApartamentDTO
     public string? Description { get; set; }
     public string? AddressId { get; set; }
     public string? OwnerId { get; set; }
+    public List<IFormFile> Images { get; set; } = new();
+
 }

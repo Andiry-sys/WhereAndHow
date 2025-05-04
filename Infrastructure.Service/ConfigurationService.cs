@@ -8,8 +8,13 @@ public static class ConfigurationService
 {
     public static IServiceCollection AddInfrastructureService(this IServiceCollection services)
     {
-        // Add your infrastructure services here
+        // Add infrastructure services here
         services.AddScoped<IAddressService,AddressService>();
+        services.AddScoped<IApartamentService, ApartamentService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IEmailSender, EmailSender>();
+        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IUserService, UserService>();
         return services;
     }
 }
