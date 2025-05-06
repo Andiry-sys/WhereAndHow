@@ -21,70 +21,69 @@
       "prefix": "app",
       "architect": {
         "build": {
-  "builder": "@angular-devkit/build-angular:browser",
-  "options": {
-    "outputPath": "dist/whereandhow.client",
-    "index": "src/index.html",
-    "main": "src/main.ts",
-    "polyfills": [
-      "zone.js"
-    ],
-    "tsConfig": "tsconfig.app.json",
-    "assets": [
-      {
-        "glob": "**/*",
-        "input": "public",
-        "output": "/"
-      }
-    ],
-    "styles": [
-      "src/styles.css"
-    ],
-    "scripts": []
-  },
-  "configurations": {
-    "production": {
-      "budgets": [
-        {
-          "type": "initial",
-          "maximumWarning": "500kB",
-          "maximumError": "1MB"
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/whereandhow.client",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
         },
-        {
-          "type": "anyComponentStyle",
-          "maximumWarning": "4kB",
-          "maximumError": "8kB"
-        }
-      ],
-      "outputHashing": "all"
-    },
-    "development": {
-      "optimization": false,
-      "extractLicenses": false,
-      "sourceMap": true
-    }
-  },
-  "defaultConfiguration": "production"
-}
-,
         "serve": {
-  "builder": "@angular-devkit/build-angular:dev-server",
-  "options": {
-    "browserTarget": "whereandhow.client:build:development",
-    "proxyConfig": "src/proxy.conf.js",
-    "port": 51843
-  },
-  "configurations": {
-    "production": {
-      "browserTarget": "whereandhow.client:build:production"
-    },
-    "development": {
-      "browserTarget": "whereandhow.client:build:development"
-    }
-  },
-  "defaultConfiguration": "development"
-}
-,
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "whereandhow.client:build:development",
+            "proxyConfig": "src/proxy.conf.js",
+            "port": 4200,
+            "ssl": true
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "whereandhow.client:build:production"
+            },
+            "development": {
+              "browserTarget": "whereandhow.client:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
         },

@@ -15,8 +15,29 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructurePersistenceService(builder.Configuration);
 builder.Services.AddInfrastructureService();
 builder.Services.AddInfrastructureWeb(builder.Configuration);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "MyPolice",
+        builder =>
+        {
+            builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        }
+    );
+});
+//Seed Data command `dotnet run seed`
+if(args.Contains("seed"))
+{
+    var tempApp = builder.Build();
+    using var scope = tempApp.Services.CreateScope();
+    var services = scope.ServiceProvider;
 
+    var userContext = services.GetRequiredService<UserContext>();
+    SeedData.Seed(userContext);
+    Console.WriteLine("✅ Seeding complete!");
 
+    return;
+}
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -42,25 +63,10 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations();
 }
 
-//Seed Data command `dotnet run seed`
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    if (args.Contains("seed"))
-    {
-        var userContext = services.GetRequiredService<UserContext>();
-        SeedData.Seed(userContext);
-        Console.WriteLine("✅ Seeding complete!");
-    }
-    else
-    {
-        app.Run();
-    }
-}
-
 app.UseHttpsRedirection();
+app.UseCors("MyPolice");
 
+app.UseAuthentication();   
 app.UseAuthorization();
 
 app.MapControllers();

@@ -1,6 +1,5 @@
 ﻿using Application.Interfaces;
 using Core.Domain.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WhereAndHow.Server.Controllers;

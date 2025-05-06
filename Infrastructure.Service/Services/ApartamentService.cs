@@ -35,7 +35,7 @@ internal class ApartamentService (IApartamentRepository repository): IApartament
             photos.Add(new Photo
             {
                 Id = Guid.NewGuid().ToString(),
-                ImagePath = Path.Combine("uploads", safeFileName).Replace("\\", "/"),
+                ImagePath = Path.Combine("uploads", safeFileName).Replace("\\", "/"),                
                 RoomId = roomId
             });
         }

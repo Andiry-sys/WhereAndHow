@@ -9,7 +9,7 @@
             <div class="apartment-images">
               <carousel >
                 <slide *ngFor="let images of apartament.photos">
-                  <img src="{{ getCompleteImageUrl(images.photoImagePath) }}" alt="Apartment Image" height="300px" width="500px">
+                  <img src="{{ images.photoImagePath }}" alt="Apartment Image" height="300px" width="500px">
                 </slide>
               </carousel>
 

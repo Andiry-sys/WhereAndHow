@@ -1,4 +1,4 @@
-export interface Address {
+export interface Addresses {
   id: string;
   street: string;
   city: string;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -33,6 +34,12 @@ public static class ConfigurationService
                         )
                     };
                 });
+        services.Configure<FormOptions>(o =>
+        {
+            o.ValueLengthLimit = int.MaxValue;
+            o.MultipartBodyLengthLimit = int.MaxValue;
+            o.MemoryBufferThreshold = int.MaxValue;
+        });
         return services;
     }
 }

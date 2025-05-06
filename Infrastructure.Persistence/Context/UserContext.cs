@@ -16,7 +16,17 @@ public class UserContext(DbContextOptions<UserContext> options) : IdentityDbCont
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        builder.Entity<Apartament>()
+            .HasOne(a => a.Address)
+            .WithOne(ad => ad.Apartament)
+            .HasForeignKey<Apartament>(a => a.AddressId);
+
+        builder.Entity<Apartament>()
+            .HasOne(a => a.History)
+            .WithOne(h => h.Apartament)
+            .HasForeignKey<Apartament>(a => a.HistoryId);
         builder.Ignore<IdentityUserLogin<string>>();
+
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

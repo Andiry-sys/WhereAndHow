@@ -1,16 +1,16 @@
-import { Apartamet } from './../model/apartament';
+import { Apartamet } from './../Model/Apartament';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApartametRes } from '../model/apartamentRes';
-import { OrderDTO } from '../model/orderDTO';
+import { ApartametRes } from '../Model/ApartamentRes';
+import { OrderDTO } from '../Model/OrderDTO';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApartamentService {
-  private apartamentURL: string = 'Apartament';
+  private apartamentURL: string = '/api/apartment';
 
   constructor(private http: HttpClient) {}
 

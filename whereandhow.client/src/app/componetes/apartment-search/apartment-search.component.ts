@@ -1,11 +1,11 @@
 import { HttpParams } from '@angular/common/http';
-import { SearchApartament } from './../../model/searchApartament';
+import { SearchApartament } from './../../Model/SearchApartament';
 import { ApartamentService } from './../../services/apartament-service.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LabelType } from 'ng5-slider';
-import { ApartametRes } from './../../model/apartamentRes';
+import { ApartametRes } from '../../Model/ApartamentRes';
 @Component({
   selector: 'app-apartment-search',
   templateUrl: './apartment-search.component.html',

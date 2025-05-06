@@ -1,5 +1,5 @@
 import { Component,  OnInit } from '@angular/core';
-import { ApartametRes } from '../../model/apartamentRes';
+import { ApartametRes } from '../../Model/ApartamentRes';
 import { ApartamentService } from '../../services/apartament-service.service';
 @Component({
   selector: 'app-home',
@@ -24,10 +24,4 @@ export class HomeComponent implements OnInit {
       }
     );
   }
-  getCompleteImageUrl(imageUrl: string): string {
-    const baseUrl = 'https://localhost:7205/';
-    return `${baseUrl}/${imageUrl}`;
-  }
-
-
 }

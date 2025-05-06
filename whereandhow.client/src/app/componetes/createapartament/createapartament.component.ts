@@ -2,11 +2,11 @@ import { Observable } from 'rxjs';
 import { AddressService } from './../../services/address.service';
 import { ApartamentService } from './../../services/apartament-service.service';
 import { Component, OnInit } from '@angular/core';
-import { Address } from '../../model/address';
+import { Addresses } from '../../Model/Addresses';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { UpdateUserprofileService } from '../../services/update-userprofile.service';
-import { Apartamet } from '../../model/apartament';
+import { Apartamet } from '../../Model/Apartament';
 
 @Component({
   selector: 'app-createapartament',
@@ -14,7 +14,7 @@ import { Apartamet } from '../../model/apartament';
   styleUrls: ['./createapartament.component.css'],
 })
 export class CreateapartamentComponent implements OnInit {
-  public addresses!: Address[];
+  public addresses!: Addresses[];
   public apartmentForm!: FormGroup;
   public apartament: Apartamet = {
     name: '',

@@ -1,13 +1,14 @@
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { User } from '../Model/User';
+import { NavbarComponent } from '../componetes/navbar/navbar.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private baseURL: string = 'Authenticate/';
+  private baseURL: string = '/api/authenticate/';
   constructor(private http: HttpClient, private route: Router) {}
 
   register(user: any) {

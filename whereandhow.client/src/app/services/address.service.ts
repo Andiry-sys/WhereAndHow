@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Address } from '../model/address';
+import { Addresses } from '../Model/Addresses';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AddressService {
-  private addressURL = 'Addresses';
+  private addressURL = '/api/address';
 
   constructor(private http: HttpClient) {}
 
-  public getAddress(): Observable<Address[]> {
-    return this.http.get<Address[]>(this.addressURL);
+  public getAddress(): Observable<Addresses[]> {
+    return this.http.get<Addresses[]>(this.addressURL);
   }
 }

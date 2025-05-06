@@ -1,12 +1,13 @@
 import { OrderService } from './../../services/order.service';
 import { Component } from '@angular/core';
-import { ActivatedRoute, ParamMap, Route, Router } from '@angular/router';
-import { ApartametRes } from '../../model/apartamentRes';
-import { OrderDTO } from '../../model/orderDTO';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApartametRes } from '../../Model/ApartamentRes';
+import { OrderDTO } from '../../Model/OrderDTO';
 import { ApartamentService } from '../../services/apartament-service.service';
 import { AuthService } from '../../services/auth.service';
 import { UpdateUserprofileService } from '../../services/update-userprofile.service';
-import {FormControl, FormGroup} from "@angular/forms";
+import { FormGroup} from "@angular/forms";
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-current-apartament',
@@ -84,9 +85,6 @@ export class CurrentApartamentComponent {
   }
   }
 
-  getCompleteImageUrl(imageUrl: string): string {
-    const baseUrl = 'https://localhost:7205/';
-    return `${baseUrl}/${imageUrl}`;
-  }
+ 
 
 }

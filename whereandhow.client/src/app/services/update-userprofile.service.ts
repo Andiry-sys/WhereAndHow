@@ -1,13 +1,12 @@
+import { User } from '../Model/User';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { User } from '../model/user';
-
 @Injectable({
   providedIn: 'root',
 })
 export class UpdateUserprofileService {
-  private baseURL = 'User';
+  private baseURL = '/api/user';
   constructor(private http: HttpClient) {}
 
   private getLoggedInUserId() {

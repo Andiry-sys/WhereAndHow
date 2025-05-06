@@ -17,5 +17,5 @@ public class User : IdentityUser
     public int CommentId { get; set; }
 
     public string? ApartamentId { get; set; }
-    public List<Apartament>? Apartaments { get; set; }
+    public List<Apartament>? Apartaments { get; set; } = [];
 }
