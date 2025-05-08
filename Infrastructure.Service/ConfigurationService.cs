@@ -12,7 +12,7 @@ public static class ConfigurationService
         services.AddScoped<IAddressService,AddressService>();
         services.AddScoped<IApartamentService, ApartamentService>();
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IEmailSender, EmailSender>();
+        services.AddTransient<IEmailSender, EmailSender>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IUserService, UserService>();
         return services;

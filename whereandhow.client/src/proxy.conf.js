@@ -1,10 +1,17 @@
 const { env } = require("process");
 
-const target = env.ASPNETCORE_HTTPS_PORT
-  ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}`
-  : env.ASPNETCORE_URLS
-  ? env.ASPNETCORE_URLS.split(";")[0]
-  : "http://localhost:5293";
+let target;
+
+if (env.ASPNETCORE_HTTP_PORT) {
+  target = `http://localhost:${env.ASPNETCORE_HTTP_PORT}`;
+} else if (env.ASPNETCORE_URLS) {
+  const urls = env.ASPNETCORE_URLS.split(";");
+  const httpUrl = urls.find((url) => url.startsWith("http://"));
+  target = httpUrl || "http://localhost:5293";
+} else {
+  target = "http://localhost:5293";
+}
+
 
 const PROXY_CONFIG = [
   {

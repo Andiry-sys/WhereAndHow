@@ -72,7 +72,7 @@
             "browserTarget": "whereandhow.client:build:development",
             "proxyConfig": "src/proxy.conf.js",
             "port": 4200,
-            "ssl": true
+            "ssl": false
           },
           "configurations": {
             "production": {
