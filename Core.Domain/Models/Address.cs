@@ -8,5 +8,5 @@ public class Address
     public string? City { get; set; }
     public string? NumberHouse { get; set; }
     public string? ApartamentId { get; set; }
-    public Apartament? Apartament { get; set; }
+    public List<Apartament>? Apartaments { get; set; }
 }

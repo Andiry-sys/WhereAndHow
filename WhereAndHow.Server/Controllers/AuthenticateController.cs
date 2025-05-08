@@ -49,7 +49,6 @@ public class AuthenticateController(UserManager<User> userManager,SignInManager<
             Email = model.Email,
             PhoneNumber = model.PhoneNumber,
             SecurityStamp = Guid.NewGuid().ToString(),
-            Password = model.Password,
             UserName = model.Email,
             SureName = model.SureName,
             Name = model.Name,

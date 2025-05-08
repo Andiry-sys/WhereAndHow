@@ -75,8 +75,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("HistoryId")
                         .IsUnique();
@@ -200,9 +199,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
@@ -351,8 +347,9 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Core.Domain.Models.Apartament", b =>
                 {
                     b.HasOne("Core.Domain.Models.Address", "Address")
-                        .WithOne("Apartament")
-                        .HasForeignKey("Core.Domain.Models.Apartament", "AddressId");
+                        .WithMany("Apartaments")
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Core.Domain.Models.HistoryApartament", "History")
                         .WithOne("Apartament")
@@ -446,7 +443,7 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Core.Domain.Models.Address", b =>
                 {
-                    b.Navigation("Apartament");
+                    b.Navigation("Apartaments");
                 });
 
             modelBuilder.Entity("Core.Domain.Models.Apartament", b =>

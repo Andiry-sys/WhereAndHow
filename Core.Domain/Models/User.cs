@@ -7,7 +7,6 @@ public class User : IdentityUser
 {
     public string? Name { get; set; }
     public string? SureName { get; set; }
-    public string? Password { get; set; }
     public bool? IsLosser { get; set; }
 
     public HistoryApartament? HistoryApartament { get; set; }

@@ -27,14 +27,22 @@ export class RegisterComponent {
   }
 
   onRegister() {
-    Object.keys(this.registerForm.controls).forEach(controlName => {
+    Object.keys(this.registerForm.controls).forEach((controlName) => {
       this.registerForm.controls[controlName].markAsTouched();
     });
+
     if (this.registerForm.valid) {
-      this.auth.register(this.registerForm.value);
+      this.auth.register(this.registerForm.value).subscribe({
+        next: () => {
+          this.router.navigate(['']);
+        },
+        error: (err) => {
+          console.error('Registration error:', err);
+          alert('Реєстрація не вдалася');
+        },
+      });
+
       this.registerForm.reset();
-      this.router.navigate(['']);
-    }else{
     }
   }
   type: string = "password";

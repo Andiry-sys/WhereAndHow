@@ -18,8 +18,9 @@ public class UserContext(DbContextOptions<UserContext> options) : IdentityDbCont
         base.OnModelCreating(builder);
         builder.Entity<Apartament>()
             .HasOne(a => a.Address)
-            .WithOne(ad => ad.Apartament)
-            .HasForeignKey<Apartament>(a => a.AddressId);
+            .WithMany(ad => ad.Apartaments)
+            .HasForeignKey(a => a.AddressId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Entity<Apartament>()
             .HasOne(a => a.History)

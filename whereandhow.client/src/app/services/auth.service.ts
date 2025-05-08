@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../Model/User';
 import { NavbarComponent } from '../componetes/navbar/navbar.component';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,11 +13,9 @@ export class AuthService {
   constructor(private http: HttpClient, private route: Router) {}
 
   register(user: any) {
-    return this.http
-      .post<any>(`${this.baseURL}register`, user)
-      .subscribe((res) => {
-        this.setToken(res.token);
-      });
+    return this.http.post<any>(`${this.baseURL}register`, user).pipe(
+      tap(res => this.setToken(res.token))
+    );
   }
 
    login(user: any){

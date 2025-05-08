@@ -48,7 +48,6 @@ namespace Infrastructure.Persistence.Migrations
                     Id = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     SureName = table.Column<string>(type: "text", nullable: true),
-                    Password = table.Column<string>(type: "text", nullable: true),
                     IsLosser = table.Column<bool>(type: "boolean", nullable: true),
                     HistoryId = table.Column<string>(type: "text", nullable: true),
                     CommentId = table.Column<int>(type: "integer", nullable: false),
@@ -200,7 +199,8 @@ namespace Infrastructure.Persistence.Migrations
                         name: "FK_Apartaments_Address_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Address",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Apartaments_AspNetUsers_OwnerId",
                         column: x => x.OwnerId,
@@ -258,8 +258,7 @@ namespace Infrastructure.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Apartaments_AddressId",
                 table: "Apartaments",
-                column: "AddressId",
-                unique: true);
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Apartaments_HistoryId",

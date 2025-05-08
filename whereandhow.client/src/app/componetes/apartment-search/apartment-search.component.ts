@@ -65,7 +65,7 @@ export class ApartmentSearchComponent implements OnInit {
       .subscribe((res) => {
         const param = new HttpParams();
         param.append('aprtaments', res.join(', '));
-        this.router.navigate([''], { queryParams: param });
+        this.router.navigate(['all-apartments'], { queryParams: param });
       },
       (error)=>{
         alert("Not found " + error['status']+"! Поміняйте параметри пошуку !!!")
