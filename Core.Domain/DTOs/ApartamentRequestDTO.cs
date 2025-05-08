@@ -2,7 +2,7 @@
 
 namespace Core.Domain.DTOs;
 
-public class ApartamentDTO
+public class ApartamentRequestDTO
 {
     public string? Name { get; set; }
     public string? TypeRoom { get; set; }

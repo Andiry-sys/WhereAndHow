@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApartametRes } from '../Model/ApartamentRes';
 import { OrderDTO } from '../Model/OrderDTO';
+import { SearchApartament } from '../Model/SearchApartament';
 
 @Injectable({
   providedIn: 'root',
@@ -22,11 +23,8 @@ export class ApartamentService {
       .pipe(map((response) => response.aparataments));
   }
 
-  public getSearchApartament(search: any): Observable<Apartamet[]> {
-    return this.http.get<Apartamet[]>(
-      `${this.apartamentURL}/searchapartament`,
-      { params: search }
-    );
+  public getSearchApartament(search: SearchApartament): Observable<Apartamet[]> {
+    return this.http.post<Apartamet[]>(`${this.apartamentURL}/searchapartament`,search);
   }
 
   public getApartamentById(Id: string): Observable<ApartametRes> {

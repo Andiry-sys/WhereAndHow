@@ -9,7 +9,7 @@ internal class ApartamentService (IApartamentRepository repository): IApartament
 {
     private readonly IApartamentRepository _repository = repository;
 
-    public async Task<bool> AddAsync(ApartamentDTO dto, string uploadRootPath)
+    public async Task<bool> AddAsync(ApartamentRequestDTO dto, string uploadRootPath)
     {
         var user = await _repository.GetUserByIdAsync(dto.OwnerId);
         var address = await _repository.GetAddressByIdAsync(dto.AddressId);
@@ -108,7 +108,7 @@ internal class ApartamentService (IApartamentRepository repository): IApartament
         };
     }
 
-    public async Task<List<Apartament>> SearchAsync(SearchApartamentDTO dto)
+    public async Task<List<ApartamentResponseDTO>> SearchAsync(SearchApartamentDTO dto)
     {
         return await _repository.SearchAsync(dto);
     }

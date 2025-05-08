@@ -24,8 +24,8 @@ public class ApartmentController (IApartamentService service, IWebHostEnvironmen
         return result.Count == 0 ? NotFound("No apartaments found") : Ok(new { aparataments = result });
     }
 
-    [HttpGet("searchapartament")]
-    public async Task<IActionResult> Search([FromQuery] SearchApartamentDTO dto)
+    [HttpPost("searchapartament")]
+    public async Task<IActionResult> Search([FromBody] SearchApartamentDTO dto)
     {
         if(dto == null)
             return BadRequest("Missing parameters");
@@ -35,7 +35,7 @@ public class ApartmentController (IApartamentService service, IWebHostEnvironmen
     }
 
     [HttpPost("addroom")]
-    public async Task<IActionResult> Add([FromForm] ApartamentDTO dto)
+    public async Task<IActionResult> Add([FromForm] ApartamentRequestDTO dto)
     {
         var uploadRootPath = Path.Combine(_env.WebRootPath, "uploads");
 

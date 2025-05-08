@@ -5,9 +5,9 @@ using Core.Domain.Models;
 namespace Infrastructure.Persistence.Interfaces;
 public interface IApartamentRepository
 {
-    Task<Apartament?> GetByIdAsync(string id);
-    Task<List<Apartament>> SearchAsync(SearchApartamentDTO dto);
-    Task<List<Apartament>> GetAllAsync();
+    Task<ApartamentResponseDTO?> GetByIdAsync(string id);
+    Task<List<ApartamentResponseDTO>> SearchAsync(SearchApartamentDTO dto);
+    Task<List<ApartamentResponseDTO>> GetAllAsync();
     Task AddAsync(Apartament apartament);
     Task<User?> GetUserByIdAsync(string id);
     Task<Address?> GetAddressByIdAsync(string id);
