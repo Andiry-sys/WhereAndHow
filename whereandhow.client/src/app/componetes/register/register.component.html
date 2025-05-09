@@ -7,37 +7,33 @@
             <h3 class="pt-3 font-weight-bold">Реєстрація</h3>
           </div>
           <div class="panel-body p-3">
-            <form [formGroup]="registerForm">
+            <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
               <div class="form-group pt-3">
                 <div class="input-field">
-                  <span
-                    class="fa fa-user-circle-o p-2"
-                    aria-hidden="true"
-                  ></span>
-                  <input formControlName="Name" id="Name" type="text" placeholder="Ім'я" required maxlength="20"/>
+                  <span class="fa fa-user-circle-o p-2"
+                        aria-hidden="true"></span>
+                  <input formControlName="Name" id="Name" type="text" placeholder="Ім'я" required maxlength="20" />
 
                 </div>
                 <div class="form-text text-danger" *ngIf="Name.errors?.['required'] && Name.touched">
                   Введіть ім'я
                 </div>
-                <div class="form-text text-danger"  *ngIf="Name.errors?.['minlength']">
+                <div class="form-text text-danger" *ngIf="Name.errors?.['minlength']">
                   Ім'я має містити більше 2 символів
                 </div>
 
               </div>
               <div class="form-group pt-3">
                 <div class="input-field">
-                  <span
-                    class="fa fa-user-circle-o p-2"
-                    aria-hidden="true"
-                  ></span>
-                  <input formControlName="SureName" type="text" placeholder="Прізвище" required maxlength="20"/>
+                  <span class="fa fa-user-circle-o p-2"
+                        aria-hidden="true"></span>
+                  <input formControlName="SureName" type="text" placeholder="Прізвище" required maxlength="20" />
                 </div>
 
                 <div class="form-text text-danger" *ngIf="SureName.errors?.['required'] && SureName.touched">
                   Введіть прізвище
                 </div>
-                <div class="form-text text-danger"  *ngIf="SureName.errors?.['minlength']">
+                <div class="form-text text-danger" *ngIf="SureName.errors?.['minlength']">
                   Прізвище має містити більше 2 символів
                 </div>
               </div>
@@ -50,7 +46,7 @@
                 <div class="form-text text-danger" *ngIf="email.errors?.['required'] && email.touched">
                   Введіть почту
                 </div>
-                <div class="form-text text-danger"  *ngIf="email.errors?.['email']">
+                <div class="form-text text-danger" *ngIf="email.errors?.['email']">
                   Введіть дійсну електронну скриньку
                 </div>
               </div>
@@ -58,12 +54,12 @@
               <div class="form-group pt-3">
                 <div class="input-field">
                   <span class="fa fa-mobile p-2" aria-hidden="true"></span>
-                  <input formControlName="PhoneNumber"  type="text" placeholder="Номер телефону" required />
+                  <input formControlName="PhoneNumber" type="text" placeholder="Номер телефону" required />
                 </div>
                 <div class="form-text text-danger" *ngIf="PhoneNumber.errors?.['required'] && PhoneNumber.touched">
                   Введіть номер телефону
                 </div>
-                <div class="form-text text-danger"  *ngIf="PhoneNumber.errors?.['pattern']">
+                <div class="form-text text-danger" *ngIf="PhoneNumber.errors?.['pattern']">
                   Формат -> (0976734070)
                 </div>
               </div>
@@ -77,23 +73,20 @@
                 <div class="form-text text-danger" *ngIf="password.errors?.['required'] && password.touched">
                   Введіть пароль
                 </div>
-                <div class="form-text text-danger"  *ngIf="password.errors?.['pattern']">
+                <div class="form-text text-danger" *ngIf="password.errors?.['pattern']">
                   Мінімум одна велика літера, одне число, один символ (@#$%^&+=!*) і мінімум 5 символів
                 </div>
               </div>
 
-              <button
-                (click) ="onRegister()"
-                type="submit"
-                class="btn btn-primary btn-block mt-4 w-100"
-
-              >
+              <button (click)="onRegister()"
+                      type="submit"
+                      class="btn btn-primary btn-block mt-4 w-100">
                 Зареєструватись
               </button>
-                <div class="text-center pt-4 text-white">
-                  Вже є акаунт?
-                  <a id="forget" routerLink="/login">Логін</a>
-                </div>
+              <div class="text-center pt-4 text-white">
+                Вже є акаунт?
+                <a id="forget" routerLink="/login">Логін</a>
+              </div>
             </form>
           </div>
         </div>

@@ -1,12 +1,14 @@
   <div class="outer">
+
   <div *ngIf="apartments.length === 0; else apartmentList">
-    <div class="alert alert-warning text-center mt-5" role="alert">
-      <h4 class="alert-heading">Помешкання не знайдено</h4>
-      <p>На жаль, за вашим запитом нічого не знайдено. Спробуйте змінити фільтри пошуку.</p>
+    <div class="no-results-container text-center mt-5">
+      <h4 class="no-results-heading">Помешкання не знайдено</h4>
+      <p class="no-results-text">На жаль, за вашим запитом нічого не знайдено. Спробуйте змінити фільтри пошуку.</p>
       <a routerLink="/apartment-search" class="btn btn-primary mt-3">Повернутися до пошуку</a>
     </div>
   </div>
   <ng-template #apartmentList>
+
     <div class="apartment-list">
       <div *ngFor="let apartment of apartments" class="apartment-item">
         <div class="apartment-details">

@@ -33,7 +33,7 @@ export class CreateapartamentComponent implements OnInit {
     'Дві спальні',
     'Три спальні',
   ];
-
+  public selectedFileName: string = '';
 
   constructor(
     private apartmentService: ApartamentService,
@@ -68,8 +68,13 @@ export class CreateapartamentComponent implements OnInit {
 
   onFilesSelected(event: any): void {
     const files: File[] = event.target.files;
-    if (files) {
+
+    if (files && files.length > 0) {
       this.apartament.images = Array.from(files);
+      this.selectedFileName = this.apartament.images.map(file => file.name).join(', ');
+    } else {
+      this.apartament.images = [];
+      this.selectedFileName = '';
     }
   }
   onSubmit() {

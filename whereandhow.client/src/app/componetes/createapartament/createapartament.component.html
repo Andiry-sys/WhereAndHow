@@ -1,154 +1,56 @@
 <div class="outer">
-  <div class="container">
-    <div class="row">
-      <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4 offset-md-3">
-        <div class="panel border bg-dark">
-          <div class="panel-heading">
-            <h3 class="pt-3 font-weight-bold">Введіть данні</h3>
-          </div>
-          <div class="panel-body p-3">
-            <form [formGroup]="apartmentForm" enctype="multipart/form-data">
-              <div class="form-group pt-3">
-                <label for="typeRoom">Назва помешкання</label>
-                <div class="input-field">
-                  <input
-                    [(ngModel)]="apartament.name"
-                    formControlName="name"
-                    type="text"
-                    id="name"
-                    required
-                    minlength="4"
-                  />
-                </div>
-                <div class="form-text text-danger" *ngIf="name.errors?.['required'] && name.touched">
-                  Введіть назву
-                </div>
-                <div class="form-text text-danger"  *ngIf="name.errors?.['minlength']">
-                  Назва має містити більше 4 символів
-                </div>
-              </div>
-
-              <div class="form-group pt-3">
-                <div class="form-outline">
-                  <label for="typeRoom">Ціна за: (за добу в ₴)</label>
-                  <input type="number" class="form-control"
-                    [(ngModel)]="apartament.price"
-                    formControlName="price"
-                    type="number"
-                    id="price"
-                    required
-                    min="10"
-                    max="10000"
-                  />
-                </div>
-                <div class="form-text text-danger" *ngIf="price.errors?.['required'] && price.touched">
-                  Введіть ціну
-                </div>
-                <div class="form-text text-danger"  *ngIf="price.errors?.['max']">
-                  Не дорожче ніж 10 000
-                </div>
-                <div class="form-text text-danger"  *ngIf="price.errors?.['min'] && price.touched">
-                  Не дешевше ніж 10
-                </div>
-              </div>
-
-              <div class="form-group pt-3">
-                <div class="form-inline">
-                  <span class="" aria-hidden="true"></span>
-                  <label for="typeRoom">Тип помешкання: </label>
-                  <br />
-                  <select
-                    class="form-select"
-                    id="typeRoom"
-                    [(ngModel)]="apartament.typeRoom"
-                    formControlName="typeRoom"
-                    required
-                  >
-                    <option *ngFor="let type of apartmentTypes" [value]="type">
-                      {{ type }}
-                    </option>
-                  </select>
-                </div>
-                <div class="form-text text-danger"  *ngIf="typeRoom.errors?.['required'] && typeRoom.touched">
-                  Оберіть тип апартаменту
-                </div>
-              </div>
-
-              <div class="form-group pt-3">
-                <div class="">
-                  <span class="" aria-hidden="true"></span>
-                  <label for="images">Фото: </label>
-                  <br />
-
-                  <input
-                    (change)="onFilesSelected($event)"
-                    type="file"
-                    id="images"
-                    multiple
-                    formControlName="images"
-                    required
-                  />
-                </div>
-                <div class="form-text text-danger"  *ngIf="images.errors?.['required'] && images.touched">
-                  Додайте фотографії
-                </div>
-              </div>
-
-              <div class="form-group pt-3">
-                <div class="">
-                  <label for="addressId">Адреса: </label>
-                  <br />
-                  <select
-                    class="form-select"
-                    id="addressId"
-                    [(ngModel)]="apartament.addressId"
-                    formControlName="addressId"
-                    required
-                  >
-                    <option
-                      *ngFor="let address of addresses"
-                      [value]="address.id"
-                    >
-                      {{ address.street }}, місто {{ address.city }}, будинок
-                      {{ address.numberHouse }}
-                    </option>
-
-                  </select>
-                </div>
-                <div class="form-text text-danger"  *ngIf="addressId.errors?.['required'] && addressId.touched">
-                  Оберіть адресу
-                </div>
-              </div>
-              <div class="form-group pt-3">
-                <div class="input-field">
-                  <textarea
-                    [(ngModel)]="apartament.description"
-                    formControlName="description"
-                    class="form-control"
-                    id="description"
-                    rows="5"
-                    placeholder="Опис кімнати"
-                    required
-                  ></textarea>
-                </div>
-                <div
-                  class="form-text text-danger"
-                  *ngIf="description.errors?.['required'] && description.touched"
-                >
-                  Введіть опис кімнати
-                </div>
-              </div>
-              <button
-                (click)="onSubmit()"
-                type="submit"
-                class="btn btn-primary btn-block mt-4 w-100"
-              >
-                Додати кімнату
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+  <div class="panel border bg-dark p-4">
+    <div class="panel-heading">
+      <h3 class="pt-3 font-weight-bold">Введіть данні</h3>
     </div>
+    <form [formGroup]="apartmentForm" enctype="multipart/form-data">
+      <div class="form-group pt-3">
+        <label for="name">Назва помешкання:</label>
+        <input [(ngModel)]="apartament.name" formControlName="name" type="text" id="name" required />
+      </div>
+
+      <div class="form-group pt-3">
+        <label for="price">Ціна за добу (₴):</label>
+        <input [(ngModel)]="apartament.price" formControlName="price" type="number" id="price" min="10" max="10000" required />
+      </div>
+
+      <div class="form-group pt-3">
+        <label for="typeRoom">Тип помешкання:</label>
+        <select [(ngModel)]="apartament.typeRoom" formControlName="typeRoom" id="typeRoom" class="form-select" required>
+          <option *ngFor="let type of apartmentTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <div class="form-group pt-3">
+        <label for="images">Фото:</label><br />
+        <label for="images" class="custom-file-label">Оберіть фото</label>
+        <input (change)="onFilesSelected($event)"
+               type="file"
+               id="images"
+               multiple
+               class="custom-file-input"
+               required />
+        <span class="file-name">{{ selectedFileName || 'Файл не обрано' }}</span>
+      </div>
+
+
+      <div class="form-group pt-3">
+        <label for="addressId">Адреса:</label>
+        <select [(ngModel)]="apartament.addressId" formControlName="addressId" id="addressId" class="form-select" required>
+          <option *ngFor="let address of addresses" [value]="address.id">
+            {{ address.street }}, {{ address.city }}, буд. {{ address.numberHouse }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group pt-3">
+        <label for="description">Опис:</label>
+        <textarea [(ngModel)]="apartament.description" formControlName="description" id="description" rows="3" class="form-control" required></textarea>
+      </div>
+
+      <button (click)="onSubmit()" type="submit" class="btn btn-primary btn-block mt-4 w-100">
+        Додати кімнату
+      </button>
+    </form>
   </div>
 </div>

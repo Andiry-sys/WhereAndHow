@@ -58,3 +58,27 @@
   background-image: url('public/backgroundMAIN.jpg');
   background-repeat: repeat;
 }
+
+.no-results-container {
+  background: rgba(33, 37, 41, 0.93);
+  color: white;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 500px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.no-results-heading {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.no-results-text {
+  font-size: 16px;
+}
+

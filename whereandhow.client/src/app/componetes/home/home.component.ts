@@ -25,12 +25,12 @@ export class HomeComponent implements OnInit {
           typeRoom: params['typeRoom'] || '',
         };
         this.apartamentService.getSearchApartament(searchParams).subscribe(
-          (res) => { console.log("SearchApart",res); this.apartments = res },
+          (res) => {  this.apartments = res},
           (err) => console.error('Search error', err)
         );
       } else {
         this.apartamentService.getApartamets().subscribe(
-          (res) => { console.log("getApart",res); this.apartments = res },
+          (res) => {  this.apartments = res },
           (err) => console.error('Fetch error', err)
         );
       }

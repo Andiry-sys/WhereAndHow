@@ -1,97 +1,82 @@
+.outer {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('public/backgroundMAIN.jpg');
+  background-repeat: repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel {
+  width: 400px;
+  background: rgba(33, 37, 41, 0.93);
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.panel-heading {
+  text-align: center;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  color: white;
+}
+
+.form-control,
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  background: rgba(33, 37, 41, 0.93);
+  color: white;
+  border: 1px solid #ccc;
+}
+
+.form-select {
+  color: white;
+  background: rgba(33, 37, 41, 0.93);
+}
+
 .btn-primary {
   font-size: 15px;
   background-color: #333;
   border-color: #333;
   color: white;
 }
-.btn-primary:hover {
-  background-color: #222;
-  border-color: #222;
+
+  .btn-primary:hover {
+    background-color: #222;
+    border-color: #222;
+  }
+
+
+.custom-file-input {
+  display: none;
 }
-.outer {
-  size: 100hv;
-  background-image: url('public/backgroundMAIN.jpg');
-  background-repeat: repeat;
-}
-.form-group{
+
+.custom-file-label {
+  display: inline-block;
+  padding: 8px 12px;
+  background-color: #444;
   color: white;
-}
-
-.panel-heading{
-  text-align: center;
-  margin-bottom: 10px;
-  color: white;
-}
-.form-control{
-  background: rgba(33, 37, 41, 0.93);;
-  color: white;
-}
-.form-group{
-  color: white;
-}
-.form-select{
-  color: white;
-  background: rgba(33, 37, 41, 0.93);
-
-}
-
-
-a:hover{
-  text-decoration: none;
-}
-
-.form-inline label{
-  padding-left: 10px;
-  margin: 0;
-  cursor: pointer;
-
-}
-
-.btn{
-  margin-top: 20px;
-  border-radius: 15px;
-}
-
-.panel {
-  min-height: 380px;
-  border-radius: 12px;
-  margin-top: 100px;
-  margin-bottom: 100px;
-
-}
-
-.input-field{
   border-radius: 5px;
-  padding: 5px;
-  display: flex;
-  align-items: center;
   cursor: pointer;
-  border: 1px solid #ddd;
-  color:white;
-
+  border: 1px solid #ccc;
+  transition: background-color 0.3s;
 }
 
-.input-field.error{
-  border: 1px solid red;
-  color: red;
-}
+  .custom-file-label:hover {
+    background-color: #333;
+  }
 
-input[type='email'],input[type='password'],input[type='text']{
-  border: none;
-  outline: none;
-  box-shadow: none;
-  width: 100%;
-  color: white;
-  background: rgba(33, 37, 41, 0.93);
-}
-
-.custom-select {
-  color: white;
-  background-color: rgba(33, 37, 41, 0.93);
-  border: 1px solid #ddd;
-}
-
-.custom-select option {
-  color: black; /* Set the font color for the option */
-  background-color: white; /* Set the background color for the option */
+.file-name {
+  margin-left: 10px;
+  color: #ccc;
 }
