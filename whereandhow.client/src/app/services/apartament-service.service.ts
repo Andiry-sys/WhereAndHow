@@ -16,15 +16,11 @@ export class ApartamentService {
   constructor(private http: HttpClient) {}
 
   public getApartamets(): Observable<ApartametRes[]> {
-    return this.http
-      .get<{ aparataments: ApartametRes[] }>(
-        `${this.apartamentURL}/apartaments`
-      )
-      .pipe(map((response) => response.aparataments));
+    return this.http.get<ApartametRes[]>(`${this.apartamentURL}/apartaments`);
   }
 
-  public getSearchApartament(search: SearchApartament): Observable<Apartamet[]> {
-    return this.http.post<Apartamet[]>(`${this.apartamentURL}/searchapartament`,search);
+  public getSearchApartament(search: SearchApartament): Observable<ApartametRes[]> {
+    return this.http.post<ApartametRes[]>(`${this.apartamentURL}/searchapartament`,search);
   }
 
   public getApartamentById(Id: string): Observable<ApartametRes> {

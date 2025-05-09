@@ -18,12 +18,14 @@ export class CurrentApartamentComponent {
   public currentAppartament!: FormGroup;
   public apartament: ApartametRes = {
     id: '',
-    apartamentName: '',
-    apartamentPrice: 0,
-    addressCity: '',
-    addressNumberHouse: '',
-    addressStreet: '',
-    apartamentTypeRoom: '',
+    name: '',
+    price: 0,
+    address: {
+      city: '',
+      numberHouse: '',
+      street: '',
+    },    
+    typeRoom: '',
     photos: [],
     description:''
   };

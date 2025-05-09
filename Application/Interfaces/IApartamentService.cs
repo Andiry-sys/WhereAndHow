@@ -5,8 +5,8 @@ namespace Application.Interfaces;
 
 public interface IApartamentService
 {
-    Task<object?> GetByIdAsync(string id, HttpRequest request);
+    Task<ApartamentResponseDTO> GetByIdAsync(string id);
     Task<List<ApartamentResponseDTO>> SearchAsync(SearchApartamentDTO dto);
-    Task<List<object>> GetAllAsync(HttpRequest request);
+    Task<List<ApartamentResponseDTO>> GetAllApartamentsAsync();
     Task<bool> AddAsync(ApartamentRequestDTO dto, string uploadRootPath);
 }

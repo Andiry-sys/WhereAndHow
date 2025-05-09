@@ -1,11 +1,13 @@
 export interface ApartametRes {
   id: string;
-  apartamentName: string;
-  apartamentPrice: number;
-  apartamentTypeRoom: string;
-  photos: { photoImagePath: string }[];
-  addressStreet: string;
-  addressCity: string;
-  addressNumberHouse: string;
+  name: string;
+  price: number;
+  typeRoom: string;
+  photos: { imagePath: string }[];
+  address: {
+    street: string;
+    city: string;
+    numberHouse: string
+  };
   description:string;
 }

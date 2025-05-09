@@ -1,48 +1,23 @@
-import { HttpParams } from '@angular/common/http';
-import { SearchApartament } from './../../Model/SearchApartament';
-import { ApartamentService } from './../../services/apartament-service.service';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LabelType } from 'ng5-slider';
-import { ApartametRes } from '../../Model/ApartamentRes';
+import { SearchApartament } from '../../Model/SearchApartament';
+
 @Component({
   selector: 'app-apartment-search',
   templateUrl: './apartment-search.component.html',
   styleUrls: ['./apartment-search.component.css'],
 })
-export class ApartmentSearchComponent implements OnInit {
-  public searchForm!: FormGroup;
-  public apartments: ApartametRes[] = [];
-  public searchApartament: SearchApartament = {
+export class ApartmentSearchComponent {
+  searchApartament: SearchApartament = {
     name: '',
-    minValue: 0,
+    minValue: 10,
     maxValue: 1000,
     city: '',
     typeRoom: '',
   };
 
-  public apartmentTypes = [
-    'Студія',
-    'Одна спальня',
-    'Дві спальні',
-    'Три спальні',
-  ];
-
-  constructor(
-    private apartamentService: ApartamentService,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.searchForm = new FormGroup({
-      name: new FormControl(),
-      guests: new FormControl(),
-      price: new FormControl(),
-      city: new FormControl(),
-      typeRoom: new FormControl(),
-    });
-  }
+  apartmentTypes = ['Студія', 'Одна спальня', 'Дві спальні', 'Три спальні'];
 
   sliderOptions = {
     floor: 10,
@@ -59,18 +34,11 @@ export class ApartmentSearchComponent implements OnInit {
     },
   };
 
-  onSubmit() {
-    this.apartamentService
-      .getSearchApartament(this.searchApartament)
-      .subscribe((res) => {
-        const param = new HttpParams();
-        param.append('aprtaments', res.join(', '));
-        this.router.navigate(['all-apartments'], { queryParams: param });
-      },
-      (error)=>{
-        alert("Not found " + error['status']+"! Поміняйте параметри пошуку !!!")
-        console.error('Not found apartaments', error);
+  constructor(private router: Router) { }
 
-      });
+  onSubmit() {
+    this.router.navigate(['all-apartments'], {
+      queryParams: this.searchApartament,
+    });
   }
 }

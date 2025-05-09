@@ -61,51 +61,18 @@ internal class ApartamentService (IApartamentRepository repository): IApartament
         return true;
     }
 
-    public async Task<List<object>> GetAllAsync(HttpRequest request)
+    public async Task<List<ApartamentResponseDTO>> GetAllApartamentsAsync()
     {
-        var list = await _repository.GetAllAsync();
-        string baseUrl = $"{request.Scheme}://{request.Host}";
-
-        return list.Select(a => new
-        {
-            a.Id,
-            ApartamentName = a.Name,
-            ApartamentTypeRoom = a.TypeRoom,
-            ApartamentPrice = a.Price,
-            AddressStreet = a.Address?.Street,
-            AddressCity = a.Address?.City,
-            AddressNumberHouse = a.Address?.NumberHouse,
-            a.Description,
-            Photos = a.Photos.Select(p => new
-            {
-                PhotoImagePath = $"{baseUrl}/{p.ImagePath.Replace("\\", "/")}"
-            })
-        }).Cast<object>().ToList();
+        return await _repository.GetAllAsync();
     }
 
-    public async Task<object?> GetByIdAsync(string id, HttpRequest request)
+    public async Task<ApartamentResponseDTO> GetByIdAsync(string id)
     {
         var room = await _repository.GetByIdAsync(id);
         if(room == null)
-            return null;
+            return new();
 
-        string baseUrl = $"{request.Scheme}://{request.Host}";
-
-        return new
-        {
-            room.Id,
-            ApartamentName = room.Name,
-            ApartamentTypeRoom = room.TypeRoom,
-            ApartamentPrice = room.Price,
-            AddressStreet = room.Address?.Street,
-            AddressCity = room.Address?.City,
-            AddressNumberHouse = room.Address?.NumberHouse,
-            room.Description,
-            Photos = room.Photos.Select(p => new
-            {
-                PhotoImagePath = $"{baseUrl}/{p.ImagePath.Replace("\\", "/")}"
-            })
-        };
+        return room;
     }
 
     public async Task<List<ApartamentResponseDTO>> SearchAsync(SearchApartamentDTO dto)

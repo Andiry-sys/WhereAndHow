@@ -21,9 +21,12 @@ internal class UserService(
     private readonly IAuthService _authService = authService;
     private readonly UserManager<User> _userManager = userManager;
 
-    public async Task<User?> GetUserByIdAsync(string id)
+    public async Task<UserDTO> GetUserByIdAsync(string id)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        if(user == null)
+            return new();
+        return new UserDTO { IsLosser = user.IsLosser, Name = user.Name, SureName = user.SureName, Email = user.Email, PhoneNumber = user.PhoneNumber, Id = user.Id };
     }
 
     public async Task<AuthResponseDto?> UpdateUserAsync(string id, UserUpdateDTO dto)

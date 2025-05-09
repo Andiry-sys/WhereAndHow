@@ -2,7 +2,6 @@ using Infrastructure.Persistence;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Seed;
 using Infrastructure.Service;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using WhereAndHow.Server;
 var builder = WebApplication.CreateBuilder(args);
@@ -59,7 +58,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();

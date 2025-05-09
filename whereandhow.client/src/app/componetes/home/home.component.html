@@ -1,30 +1,36 @@
-<div class="outer">
-  <div class="apartment-list">
+  <div class="outer">
+  <div *ngIf="apartments.length === 0; else apartmentList">
+    <div class="alert alert-warning text-center mt-5" role="alert">
+      <h4 class="alert-heading">Помешкання не знайдено</h4>
+      <p>На жаль, за вашим запитом нічого не знайдено. Спробуйте змінити фільтри пошуку.</p>
+      <a routerLink="/apartment-search" class="btn btn-primary mt-3">Повернутися до пошуку</a>
+    </div>
+  </div>
+  <ng-template #apartmentList>
+    <div class="apartment-list">
       <div *ngFor="let apartment of apartments" class="apartment-item">
         <div class="apartment-details">
           <h3 class="apartment-name">
-              {{ apartment.apartamentName }}
+            {{ apartment.name }}
           </h3>
           <div class="apartment-images">
             <carousel>
-              <slide *ngFor="let images of apartment.photos">
-                <img
-                  src="{{ images.photoImagePath }}"
-                  alt="Apartment Image"
-                  height="300px"
-                  width="300px"
-                />
+              <slide *ngFor="let image of apartment.photos">
+                <img src="{{ image.imagePath }}"
+                     alt="Apartment Image"
+                     height="300px"
+                     width="300px" />
               </slide>
             </carousel>
           </div>
 
-          <p class="apartment-price"  >
-            Ціна за добу: {{ apartment.apartamentPrice }} ₴
+          <p class="apartment-price">
+            Ціна за добу: {{ apartment.price }} ₴
           </p>
           <p class="apartment-type">
-            Кількість кімнат: {{ apartment.apartamentTypeRoom }}
+            Кількість кімнат: {{ apartment.typeRoom }}
           </p>
-          <p class="apartment-address">Місто: {{ apartment.addressCity }}</p>
+          <p class="apartment-address">Місто: {{ apartment.address.city }}</p>
           <a [routerLink]="['/current-apartament']"
              [queryParams]="{ id: apartment.id }"
              class="btn btn-primary btn-block mt-4 w-100">Додаткова Інформація</a>
@@ -36,5 +42,5 @@
       </div>
 
     </div>
-
-  </div>
+  </ng-template>
+</div>

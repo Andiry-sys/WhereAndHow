@@ -13,15 +13,15 @@ public class ApartmentController (IApartamentService service, IWebHostEnvironmen
     [HttpGet("room/{id}")]
     public async Task<IActionResult> Get(string id)
     {
-        var result = await _service.GetByIdAsync(id, Request);
+        var result = await _service.GetByIdAsync(id);
         return result == null ? BadRequest("Not found Apartament") : Ok(result);
     }
 
     [HttpGet("apartaments")]
     public async Task<IActionResult> GetAll()
     {
-        var result = await _service.GetAllAsync(Request);
-        return result.Count == 0 ? NotFound("No apartaments found") : Ok(new { aparataments = result });
+        var result = await _service.GetAllApartamentsAsync();
+        return result.Count == 0 ? NotFound("No apartaments found") : Ok(result);
     }
 
     [HttpPost("searchapartament")]

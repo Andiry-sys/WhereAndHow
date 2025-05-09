@@ -51,41 +51,37 @@ public class ApartamentRepository : IApartamentRepository
         var apartaments = await _context.Apartaments
             .Include(a => a.Photos)
             .Include(a => a.Address)
-            .Where(
-                s =>
-                    (string.IsNullOrEmpty(dto.Name) || s.Name == dto.Name)
-                    && (!dto.minValue.HasValue || s.Price >= dto.minValue.Value)
-                    && (!dto.maxValue.HasValue || s.Price <= dto.maxValue.Value)
-                    && (string.IsNullOrEmpty(dto.TypeRoom) || s.TypeRoom == dto.TypeRoom)
-                    && (string.IsNullOrEmpty(dto.City) || s.Address.City == dto.City)
+            .Where(s =>
+                (string.IsNullOrEmpty(dto.Name) || s.Name.Contains(dto.Name)) ||
+                (dto.minValue.HasValue && s.Price >= dto.minValue.Value) ||
+                (dto.maxValue.HasValue && s.Price <= dto.maxValue.Value) ||
+                (string.IsNullOrEmpty(dto.TypeRoom) || s.TypeRoom == dto.TypeRoom) ||
+                (string.IsNullOrEmpty(dto.City) || s.Address.City == dto.City)
             )
             .ToListAsync();
 
         return apartaments
-            .Select(
-                a =>
-                    new ApartamentResponseDTO
+            .Select(a => new ApartamentResponseDTO
+            {
+                Id = a.Id,
+                Name = a.Name,
+                TypeRoom = a.TypeRoom,
+                Price = a.Price,
+                Description = a.Description,
+                Address = a.Address == null
+                    ? null
+                    : new AddressDTO
                     {
-                        Id = a.Id,
-                        Name = a.Name,
-                        TypeRoom = a.TypeRoom,
-                        Price = a.Price,
-                        Description = a.Description,
-                        Address =
-                            a.Address == null
-                                ? null
-                                : new AddressDTO
-                                {
-                                    Id = a.Address.Id,
-                                    City = a.Address.City,
-                                    Street = a.Address.Street,
-                                    NumberHouse = a.Address.NumberHouse
-                                },
-                        Photos = a.Photos.Select(p => new PhotoDTO { ImagePath = p.ImagePath }).ToList()
-                    }
-            )
+                        Id = a.Address.Id,
+                        City = a.Address.City,
+                        Street = a.Address.Street,
+                        NumberHouse = a.Address.NumberHouse
+                    },
+                Photos = a.Photos.Select(p => new PhotoDTO { ImagePath = p.ImagePath }).ToList()
+            })
             .ToList();
     }
+
 
     public async Task<List<ApartamentResponseDTO>> GetAllAsync()
     {
@@ -95,28 +91,24 @@ public class ApartamentRepository : IApartamentRepository
             .ToListAsync();
 
         return apartaments
-            .Select(
-                a =>
-                    new ApartamentResponseDTO
+            .Select(a => new ApartamentResponseDTO
+            {
+                Id = a.Id,
+                Name = a.Name,
+                TypeRoom = a.TypeRoom,
+                Price = a.Price,
+                Description = a.Description,
+                Address = a.Address == null
+                    ? null
+                    : new AddressDTO
                     {
-                        Id = a.Id,
-                        Name = a.Name,
-                        TypeRoom = a.TypeRoom,
-                        Price = a.Price,
-                        Description = a.Description,
-                        Address =
-                            a.Address == null
-                                ? null
-                                : new AddressDTO
-                                {
-                                    Id = a.Address.Id,
-                                    City = a.Address.City,
-                                    Street = a.Address.Street,
-                                    NumberHouse = a.Address.NumberHouse
-                                },
-                        Photos = a.Photos.Select(p => new PhotoDTO { ImagePath = p.ImagePath }).ToList()
-                    }
-            )
+                        Id = a.Address.Id,
+                        City = a.Address.City,
+                        Street = a.Address.Street,
+                        NumberHouse = a.Address.NumberHouse
+                    },
+                Photos = a.Photos.Select(p => new PhotoDTO { ImagePath = p.ImagePath }).ToList()
+            })
             .ToList();
     }
 
