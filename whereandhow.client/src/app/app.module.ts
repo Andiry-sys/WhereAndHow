@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './componetes/login/login.component';
 import { RegisterComponent } from './componetes/register/register.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './componetes/home/home.component';
 import { CreateapartamentComponent } from './componetes/createapartament/createapartament.component';
@@ -16,6 +16,7 @@ import { CurrentApartamentComponent } from './componetes/current-apartament/curr
 import { FooterComponent } from './componetes/footer/footer.component';
 import {CarouselModule} from "ngx-bootstrap/carousel";
 import { AboutPageComponent } from './componetes/about-page/about-page.component';
+import { AuthInterceptor } from './interceptors/auth-interceptor.interceptor';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,9 @@ import { AboutPageComponent } from './componetes/about-page/about-page.component
     Ng5SliderModule,
     CarouselModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

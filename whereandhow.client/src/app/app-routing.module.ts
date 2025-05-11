@@ -8,12 +8,13 @@ import { UserProfileComponent } from './componetes/user-profile/user-profile.com
 import { ApartmentSearchComponent } from './componetes/apartment-search/apartment-search.component';
 import { CurrentApartamentComponent } from './componetes/current-apartament/current-apartament.component';
 import {AboutPageComponent} from "./componetes/about-page/about-page.component";
+import { AuthGuard } from './guard/auth-guard.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'create-apartment', component: CreateapartamentComponent },
-  { path: 'userprofile', component: UserProfileComponent },
+  { path: 'create-apartment', component: CreateapartamentComponent, canActivate: [AuthGuard] },
+  { path: 'userprofile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'search-apartment', component: ApartmentSearchComponent },
   { path: '', component: AboutPageComponent },
   { path: 'current-apartament', component: CurrentApartamentComponent },

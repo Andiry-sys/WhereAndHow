@@ -62,7 +62,7 @@ export class CurrentApartamentComponent {
 
   orderApartament() {
 
-    if(this.authService.isUserAuthenticated()){
+    if(this.authService.isLoggedIn()){
       if (!this.order.CheckInDate || !this.order.CheckOutDate) {
         alert("Ви не вибрали дату в'їзду або виїзду")
       }

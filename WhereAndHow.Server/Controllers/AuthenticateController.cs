@@ -31,7 +31,7 @@ public class AuthenticateController(UserManager<User> userManager,SignInManager<
 
         var token = _authService.GetToken(authClaims.Claims.ToList());
 
-        return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = token.ToString() });
+        return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = token });
     }
 
 
@@ -65,6 +65,6 @@ public class AuthenticateController(UserManager<User> userManager,SignInManager<
         var token = _authService.GetToken(authClaims.Claims.ToList());
 
 
-        return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = token.ToString() });
+        return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = token });
     }
 }

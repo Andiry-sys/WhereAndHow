@@ -1,58 +1,21 @@
 import { User } from '../Model/User';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root',
 })
 export class UpdateUserprofileService {
   private baseURL = '/api/user';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService:AuthService) {}
 
   private getLoggedInUserId() {
-    let token = localStorage.getItem('token');
-    if (token != null) {
-      const startIndex = token.lastIndexOf(',"exp"');
-      const endIndex = token.lastIndexOf('}');
-      token =
-        token.substring(0, startIndex) + token.substring(endIndex + 1) + '}';
-      let sim = token.indexOf('.');
-      token = token.substring(sim + 1);
-
-      const json = JSON.parse(token);
-
-      const Id =
-        json[
-          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
-        ];
-
-      return Id;
-    }
-    return '';
+    return this.authService.getUserId();
   }
 
   public checkIsLosser(): boolean {
-    let token = localStorage.getItem('token');
-    let IsLosser = false;
-    if (token != null) {
-      const startIndex = token.lastIndexOf(',"exp"');
-      const endIndex = token.lastIndexOf('}');
-      token =
-        token.substring(0, startIndex) + token.substring(endIndex + 1) + '}';
-      let sim = token.indexOf('.');
-      token = token.substring(sim + 1);
-
-      const json = JSON.parse(token);
-     
-      if(json['IsLosser'] == 'True'){
-       IsLosser =  true;
-      }
-            
-     
-    }    
-    return IsLosser; 
-
-   
+    return this.authService.isLosser();   
   }
 
   public getUser(): Observable<User> {
@@ -69,14 +32,11 @@ export class UpdateUserprofileService {
       .subscribe(
         (response: any) => {
           const token = response.token;
-          this.setToken(token);
+          this.authService.setToken(token)
         },
         (error: any) => {
           console.error(error);
         }
       );
-  }
-  setToken(token: string) {
-    localStorage.setItem('token', token);
   }
 }

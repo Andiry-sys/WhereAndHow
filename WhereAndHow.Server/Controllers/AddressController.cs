@@ -1,9 +1,11 @@
 ﻿using Application.Interfaces;
 using Core.Domain.DTOs;
 using Core.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WhereAndHow.Server.Controllers;
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class AddressController(IAddressService addressService) : ControllerBase

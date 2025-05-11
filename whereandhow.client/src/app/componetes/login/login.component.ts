@@ -2,7 +2,7 @@ import {FormBuilder, FormControl, FormGroup, Validator, Validators} from '@angul
 import { AuthService } from './../../services/auth.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { UserLoginRequestDto } from '../../Model/userLoginRequestDto'
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -29,13 +29,22 @@ export class LoginComponent {
     });
 
     if (this.loginForm.valid) {
-      this.auth.login(this.loginForm.value);
 
-      if (this.auth.isUserAuthenticated()) {
-        this.router.navigate(['']);
-      } else {
-        window.alert('Користувача не знайдено');
-      }
+      const user: UserLoginRequestDto = {
+        email: this.loginForm.value.email,
+        password : this.loginForm.value.password
+      };
+      this.auth.login(this.loginForm.value).subscribe({
+        next: () => {
+          if (this.auth.isLoggedIn()) {
+            this.router.navigate(['']);
+          }
+        },
+        error: (err: any) => {
+          console.error('Login error:', err);
+          alert('Помилка входу. Перевірте дані.');
+        },
+      });      
     }
 
   }

@@ -28,7 +28,7 @@ public static class ConfigurationService
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidAudience =configuration["Jwt:Audience"],
-                        ValidIssuer = configuration["Jwt:Issure"],
+                        ValidIssuer = configuration["Jwt:Issuer"],
                         IssuerSigningKey = new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes(configuration["Jwt:Key"])
                         )
