@@ -160,9 +160,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ApartamentId")
-                        .HasColumnType("text");
-
                     b.Property<int>("CommentId")
                         .HasColumnType("integer");
 
@@ -357,7 +354,8 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasOne("Core.Domain.Models.User", "Owner")
                         .WithMany("Apartaments")
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Address");
 

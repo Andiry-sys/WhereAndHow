@@ -2,7 +2,6 @@
 using Core.Domain.DTOs;
 using Core.Domain.Models;
 using Infrastructure.Persistence.Interfaces;
-using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Service.Services;
 internal class ApartamentService (IApartamentRepository repository): IApartamentService
@@ -54,7 +53,6 @@ internal class ApartamentService (IApartamentRepository repository): IApartament
             Owner = user
         };
 
-        user.ApartamentId = roomId;
         user.Apartaments.Add(apartament);
 
         await _repository.AddAsync(apartament);

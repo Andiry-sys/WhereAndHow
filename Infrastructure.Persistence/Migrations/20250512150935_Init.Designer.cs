@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20250508172648_Init")]
+    [Migration("20250512150935_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -162,9 +162,6 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
-
-                    b.Property<string>("ApartamentId")
-                        .HasColumnType("text");
 
                     b.Property<int>("CommentId")
                         .HasColumnType("integer");
@@ -360,7 +357,8 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasOne("Core.Domain.Models.User", "Owner")
                         .WithMany("Apartaments")
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Address");
 

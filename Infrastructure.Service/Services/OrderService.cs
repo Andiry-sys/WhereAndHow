@@ -2,6 +2,7 @@
 using Core.Domain.DTOs;
 using Core.Domain.Models;
 using Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Service.Services;
 internal class OrderService(UserContext context,IEmailSender emailSender): IOrderService
@@ -11,17 +12,15 @@ internal class OrderService(UserContext context,IEmailSender emailSender): IOrde
 
     public async Task<bool> ProcessOrderAndSendEmailAsync(OrderDTO order)
     {
-        var owner = _context.Users.FirstOrDefault(u => u.ApartamentId == order.ApartamentId);
-        if(owner == null)
+        var apartament = await _context.Apartaments
+         .Include(a => a.Address)
+         .Include(a => a.Owner)
+         .FirstOrDefaultAsync(a => a.Id == order.ApartamentId);
+
+        if(apartament == null || apartament.Owner == null)
             return false;
 
-        var apartament = _context.Apartaments.FirstOrDefault(a => a.Id == order.ApartamentId);
-        if(apartament == null)
-            return false;
-
-        apartament.Address = _context.Address.FirstOrDefault(a => a.ApartamentId == order.ApartamentId);
-
-        var customer = _context.Users.Find(order.UserId);
+        var customer = await _context.Users.FindAsync(order.UserId);
         if(customer == null)
             return false;
 
@@ -33,26 +32,24 @@ internal class OrderService(UserContext context,IEmailSender emailSender): IOrde
 
         string message = string.Join("\n", new[]
         {
-            $"В'їзд: {order.CheckInDate}",
-            $"Виїзд: {order.CheckOutDate}",
-            $"Ваше ім'я: {customer.Name}",
-            $"Ваша електронна пошта: {customer.Email}",
-            $"Ваш номер: {customer.PhoneNumber}",
-            $"Адреса помешкання: {apartament.Address?.City} {apartament.Address?.Street} {apartament.Address?.NumberHouse}",
-            $"Контакти адміністрації: {owner.PhoneNumber}",
-            $"Електронна пошта: {owner.Email}",
-            $"Сума до сплати: {total} грн"
-        });
+        $"В'їзд: {order.CheckInDate}",
+        $"Виїзд: {order.CheckOutDate}",
+        $"Ваше ім'я: {customer.Name}",
+        $"Ваша електронна пошта: {customer.Email}",
+        $"Ваш номер: {customer.PhoneNumber}",
+        $"Адреса помешкання: {apartament.Address?.City} {apartament.Address?.Street} {apartament.Address?.NumberHouse}",
+        $"Контакти адміністрації: {apartament.Owner.PhoneNumber}",
+        $"Електронна пошта: {apartament.Owner.Email}",
+        $"Сума до сплати: {total} грн"
+    });
 
         _context.Histories.Add(new HistoryApartament
         {
             Id = Guid.NewGuid().ToString(),
-            ApartamentId = order.ApartamentId,
+            ApartamentId = apartament.Id,
             UserId = customer.Id,
             DateArrival = order.CheckInDate,
-            DateDeparture = order.CheckOutDate,
-            User = customer,
-            Apartament = apartament
+            DateDeparture = order.CheckOutDate
         });
 
         await _context.SaveChangesAsync();

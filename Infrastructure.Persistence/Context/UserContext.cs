@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Context;
+
 public class UserContext(DbContextOptions<UserContext> options) : IdentityDbContext<User>(options)
 {
     public DbSet<Address>? Address { get; set; }
@@ -16,18 +17,25 @@ public class UserContext(DbContextOptions<UserContext> options) : IdentityDbCont
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<Apartament>()
+        builder
+            .Entity<Apartament>()
             .HasOne(a => a.Address)
             .WithMany(ad => ad.Apartaments)
             .HasForeignKey(a => a.AddressId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.Entity<Apartament>()
+        builder
+            .Entity<Apartament>()
             .HasOne(a => a.History)
             .WithOne(h => h.Apartament)
             .HasForeignKey<Apartament>(a => a.HistoryId);
+        builder
+            .Entity<User>()
+            .HasMany(u => u.Apartaments)
+            .WithOne(a => a.Owner)
+            .HasForeignKey(a => a.OwnerId)
+            .OnDelete(DeleteBehavior.Cascade);
         builder.Ignore<IdentityUserLogin<string>>();
-
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

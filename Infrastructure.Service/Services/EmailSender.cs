@@ -8,8 +8,8 @@ internal class EmailSender: IEmailSender
 {
     public Task SendEmailAsync(string email, string subject, string message)
     {
-        string fromMail = "whereandhow01@gmail.com";
-        string fromPassword = "dtvhcdkqrvxtojoc";
+        string fromMail = "whereandhow02@gmail.com";
+        string fromPassword = "ustkdafartsnnaqc";
 
         var client = new SmtpClient("smtp.gmail.com", 587)
         {
@@ -17,6 +17,16 @@ internal class EmailSender: IEmailSender
             Credentials = new NetworkCredential(fromMail, fromPassword)
         };
 
-        return client.SendMailAsync(new MailMessage(fromMail, email, subject, message));
+        var mailMessage = new MailMessage
+        {
+            From = new MailAddress(fromMail, "Where & How"),
+            Subject = subject,
+            Body = message,
+            IsBodyHtml = false
+        };
+        mailMessage.To.Add(email);
+
+
+        return client.SendMailAsync(mailMessage);
     }
 }

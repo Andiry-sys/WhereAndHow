@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'userprofile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'search-apartment', component: ApartmentSearchComponent },
   { path: '', component: AboutPageComponent },
-  { path: 'current-apartament', component: CurrentApartamentComponent },
+  { path: 'current-apartament', component: CurrentApartamentComponent, canActivate: [AuthGuard] },
   { path: 'about', component: AboutPageComponent},
   { path: 'all-apartments', component: HomeComponent}
 ];

@@ -40,6 +40,6 @@ public class ApartmentController (IApartamentService service, IWebHostEnvironmen
         var uploadRootPath = Path.Combine(_env.WebRootPath, "uploads");
 
         var success = await _service.AddAsync(dto, uploadRootPath);
-        return success ? Ok("Apartment added") : BadRequest("Could not add apartment");
+        return success ? Created() : BadRequest("Could not add apartment");
     }
 }

@@ -16,7 +16,7 @@ public class Apartament
     public string? PhotoId { get; set; }
     public ICollection<Photo>? Photos { get; set; }
 
-    public string? OwnerId { get; set; }
-    public User? Owner { get; set; }
+    public string? OwnerId { get; set; } = default!;
+    public User? Owner { get; set; } = default!;
 
 }

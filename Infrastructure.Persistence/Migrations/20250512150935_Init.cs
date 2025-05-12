@@ -51,7 +51,6 @@ namespace Infrastructure.Persistence.Migrations
                     IsLosser = table.Column<bool>(type: "boolean", nullable: true),
                     HistoryId = table.Column<string>(type: "text", nullable: true),
                     CommentId = table.Column<int>(type: "integer", nullable: false),
-                    ApartamentId = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -205,7 +204,8 @@ namespace Infrastructure.Persistence.Migrations
                         name: "FK_Apartaments_AspNetUsers_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Apartaments_Histories_HistoryId",
                         column: x => x.HistoryId,

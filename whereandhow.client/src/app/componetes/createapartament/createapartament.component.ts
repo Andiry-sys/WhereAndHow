@@ -94,7 +94,7 @@ export class CreateapartamentComponent implements OnInit {
       formData.append('description',this.apartament.description)
       this.apartmentService.createApartament(formData).subscribe(() => {
         this.apartmentForm.reset();
-        this.router.navigate(['']);
+        this.router.navigate(['all-apartments']);
       });
     } else {
       alert('Ви повинні бути нашим партнером ');
