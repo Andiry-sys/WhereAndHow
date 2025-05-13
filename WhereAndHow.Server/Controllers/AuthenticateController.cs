@@ -39,7 +39,7 @@ public class AuthenticateController(UserManager<User> userManager,SignInManager<
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] UserSignUpDTO model)
     {
-        var userExists = await _userManager.FindByNameAsync(model.Name);
+        var userExists = await _userManager.FindByEmailAsync(model.Email);
         if(userExists != null)
             return StatusCode(StatusCodes.Status500InternalServerError);
 
