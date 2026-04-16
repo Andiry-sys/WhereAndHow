@@ -69,17 +69,17 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "whereandhow.client:build:development",
             "proxyConfig": "src/proxy.conf.js",
             "port": 4200,
-            "ssl": false
+            "ssl": false,
+            "buildTarget": "whereandhow.client:build:development"
           },
           "configurations": {
             "production": {
-              "browserTarget": "whereandhow.client:build:production"
+              "buildTarget": "whereandhow.client:build:production"
             },
             "development": {
-              "browserTarget": "whereandhow.client:build:development"
+              "buildTarget": "whereandhow.client:build:development"
             }
           },
           "defaultConfiguration": "development"
