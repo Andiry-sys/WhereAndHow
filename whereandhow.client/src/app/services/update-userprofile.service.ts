@@ -1,4 +1,4 @@
-import { User } from '../Model/User';
+import { User } from '../Model/user';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -15,7 +15,7 @@ export class UpdateUserprofileService {
   }
 
   public checkIsLosser(): boolean {
-    return this.authService.isLosser();   
+    return this.authService.isLosser();
   }
 
   public getUser(): Observable<User> {

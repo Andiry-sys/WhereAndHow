@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { LabelType } from 'ng5-slider';
-import { SearchApartament } from '../../Model/SearchApartament';
+import { LabelType } from '@angular-slider/ngx-slider';
+import { SearchApartament } from '../../Model/searchApartament';
 
 @Component({
     selector: 'app-apartment-search',

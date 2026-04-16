@@ -10,7 +10,7 @@ import { HomeComponent } from './componetes/home/home.component';
 import { CreateapartamentComponent } from './componetes/createapartament/createapartament.component';
 import { UserProfileComponent } from './componetes/user-profile/user-profile.component';
 import { ApartmentSearchComponent } from './componetes/apartment-search/apartment-search.component';
-import { Ng5SliderModule } from 'ng5-slider';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NavbarComponent } from './componetes/navbar/navbar.component';
 import { CurrentApartamentComponent } from './componetes/current-apartament/current-apartament.component';
 import { FooterComponent } from './componetes/footer/footer.component';
@@ -35,7 +35,7 @@ import { AuthInterceptor } from './interceptors/auth-interceptor.interceptor';
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        Ng5SliderModule,
+        NgxSliderModule,
         CarouselModule], providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         provideHttpClient(withInterceptorsFromDi())

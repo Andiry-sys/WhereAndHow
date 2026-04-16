@@ -1,4 +1,4 @@
-import { OrderDTO } from './../Model/OrderDTO';
+import { OrderDTO } from './../Model/orderDTO';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -15,5 +15,5 @@ export class OrderService {
     return this.http.post<OrderDTO>(`${this.baseURL}/send-order-email`, order);
   }
 
- 
+
 }

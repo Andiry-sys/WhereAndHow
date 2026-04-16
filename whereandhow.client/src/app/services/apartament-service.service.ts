@@ -1,11 +1,9 @@
-import { Apartamet } from './../Model/Apartament';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ApartametRes } from '../Model/ApartamentRes';
-import { OrderDTO } from '../Model/OrderDTO';
-import { SearchApartament } from '../Model/SearchApartament';
+import { ApartametRes } from '../Model/apartamentRes';
+import { OrderDTO } from '../Model/orderDTO';
+import { SearchApartament } from '../Model/searchApartament';
 
 @Injectable({
   providedIn: 'root',
@@ -30,8 +28,8 @@ export class ApartamentService {
   public createApartament(apartament: FormData): Observable<any> {
     return this.http.post(
       `${this.apartamentURL}/addroom`,
-      apartament, 
-     { responseType: 'text' as const }     
+      apartament,
+     { responseType: 'text' as const }
     );
   }
 

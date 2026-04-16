@@ -1,7 +1,7 @@
 import { OrderService } from './../../services/order.service';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApartametRes } from '../../Model/ApartamentRes';
+import { ApartametRes } from '../../Model/apartamentRes';
 import { OrderDTO } from '../../Model/OrderDTO';
 import { ApartamentService } from '../../services/apartament-service.service';
 import { AuthService } from '../../services/auth.service';
@@ -25,7 +25,7 @@ export class CurrentApartamentComponent {
       city: '',
       numberHouse: '',
       street: '',
-    },    
+    },
     typeRoom: '',
     photos: [],
     description:''
@@ -71,7 +71,7 @@ export class CurrentApartamentComponent {
       const checkOutDate = new Date(this.order.CheckOutDate);
 
       if (checkInDate >= checkOutDate) {
-        alert("Дата заїзду пізніша або співпадає з датою виїзду");       
+        alert("Дата заїзду пізніша або співпадає з датою виїзду");
       }
     this.orderService.sendOrder(this.order).subscribe(()=>{
       window.alert('Апартамент замовлено повідомлення буде надіслано на вашу електронну скиньку');
@@ -88,6 +88,6 @@ export class CurrentApartamentComponent {
   }
   }
 
- 
+
 
 }
