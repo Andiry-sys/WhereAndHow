@@ -10,9 +10,10 @@ import { FormGroup} from "@angular/forms";
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-current-apartament',
-  templateUrl: './current-apartament.component.html',
-  styleUrls: ['./current-apartament.component.css'],
+    selector: 'app-current-apartament',
+    templateUrl: './current-apartament.component.html',
+    styleUrls: ['./current-apartament.component.css'],
+    standalone: false
 })
 export class CurrentApartamentComponent {
   public currentAppartament!: FormGroup;

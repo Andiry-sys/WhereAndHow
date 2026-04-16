@@ -4,9 +4,10 @@ import { ApartametRes } from '../../Model/ApartamentRes';
 import { SearchApartament } from '../../Model/SearchApartament';
 import { ApartamentService } from '../../services/apartament-service.service';
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css'],
+    standalone: false
 })
 export class HomeComponent implements OnInit {
   public apartments: ApartametRes[] = [];

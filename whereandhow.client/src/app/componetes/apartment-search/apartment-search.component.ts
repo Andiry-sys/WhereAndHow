@@ -4,9 +4,10 @@ import { LabelType } from 'ng5-slider';
 import { SearchApartament } from '../../Model/SearchApartament';
 
 @Component({
-  selector: 'app-apartment-search',
-  templateUrl: './apartment-search.component.html',
-  styleUrls: ['./apartment-search.component.css'],
+    selector: 'app-apartment-search',
+    templateUrl: './apartment-search.component.html',
+    styleUrls: ['./apartment-search.component.css'],
+    standalone: false
 })
 export class ApartmentSearchComponent {
   searchApartament: SearchApartament = {

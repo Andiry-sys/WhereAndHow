@@ -9,9 +9,10 @@ import { UpdateUserprofileService } from '../../services/update-userprofile.serv
 import { Apartamet } from '../../Model/Apartament';
 
 @Component({
-  selector: 'app-createapartament',
-  templateUrl: './createapartament.component.html',
-  styleUrls: ['./createapartament.component.css'],
+    selector: 'app-createapartament',
+    templateUrl: './createapartament.component.html',
+    styleUrls: ['./createapartament.component.css'],
+    standalone: false
 })
 export class CreateapartamentComponent implements OnInit {
   public addresses!: Addresses[];
