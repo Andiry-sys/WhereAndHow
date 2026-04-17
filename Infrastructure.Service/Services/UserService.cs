@@ -40,7 +40,7 @@ internal class UserService(
         user.Email = dto.Email;
         user.PhoneNumber = dto.PhoneNumber;
         user.UserName = dto.Email;
-        user.IsLosser = dto.IsLosser ?? false;
+        // IsLosser is set exclusively through the partner confirmation flow (POST /api/partner/request)
 
         if (!string.IsNullOrEmpty(dto.Password))
         {

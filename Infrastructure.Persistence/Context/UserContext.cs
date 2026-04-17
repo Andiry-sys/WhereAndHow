@@ -13,6 +13,7 @@ public class UserContext(DbContextOptions<UserContext> options) : IdentityDbCont
     public DbSet<Comment>? Comments { get; set; }
     public virtual DbSet<Photo>? Photo { get; set; }
     public DbSet<HistoryApartament>? Histories { get; set; }
+    public DbSet<PartnerRequest> PartnerRequests { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -35,6 +36,13 @@ public class UserContext(DbContextOptions<UserContext> options) : IdentityDbCont
             .WithOne(a => a.Owner)
             .HasForeignKey(a => a.OwnerId)
             .OnDelete(DeleteBehavior.Cascade);
+        builder
+            .Entity<PartnerRequest>()
+            .HasOne(r => r.User)
+            .WithMany()
+            .HasForeignKey(r => r.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Ignore<IdentityUserLogin<string>>();
     }
 

@@ -178,6 +178,27 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PartnerRequests",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ConfirmedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PartnerRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PartnerRequests_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Apartaments",
                 columns: table => new
                 {
@@ -321,6 +342,11 @@ namespace Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_PartnerRequests_UserId",
+                table: "PartnerRequests",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Photo_RoomId",
                 table: "Photo",
                 column: "RoomId");
@@ -343,6 +369,9 @@ namespace Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "PartnerRequests");
 
             migrationBuilder.DropTable(
                 name: "Photo");

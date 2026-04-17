@@ -15,6 +15,7 @@ public static class ConfigurationService
         services.AddTransient<IEmailSender, EmailSender>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IPartnerService, PartnerService>();
         return services;
     }
 }

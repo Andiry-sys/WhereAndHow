@@ -2,8 +2,11 @@ using Infrastructure.Persistence;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Seed;
 using Infrastructure.Service;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.FileProviders;
+using System.Threading.RateLimiting;
 using WhereAndHow.Server;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,6 +16,20 @@ builder.Services.AddOpenApi();
 builder.Services.AddInfrastructurePersistenceService(builder.Configuration);
 builder.Services.AddInfrastructureService();
 builder.Services.AddInfrastructureWeb(builder.Configuration);
+
+// Rate limiting: partner-request — max 3 calls per IP per hour
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("partner-request", opt =>
+    {
+        opt.PermitLimit = 3;
+        opt.Window = TimeSpan.FromHours(1);
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 0;
+    });
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -61,8 +78,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("MyPolice");
+app.UseRateLimiter();
 
-app.UseAuthentication();   
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

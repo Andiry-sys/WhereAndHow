@@ -17,7 +17,7 @@ namespace Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "10.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -132,6 +132,31 @@ namespace Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("Histories");
+                });
+
+            modelBuilder.Entity("Core.Domain.Models.PartnerRequest", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ConfirmedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PartnerRequests");
                 });
 
             modelBuilder.Entity("Core.Domain.Models.Photo", b =>
@@ -384,6 +409,17 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasOne("Core.Domain.Models.User", "User")
                         .WithOne("HistoryApartament")
                         .HasForeignKey("Core.Domain.Models.HistoryApartament", "UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Core.Domain.Models.PartnerRequest", b =>
+                {
+                    b.HasOne("Core.Domain.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

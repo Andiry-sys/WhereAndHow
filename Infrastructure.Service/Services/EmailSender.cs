@@ -1,32 +1,38 @@
-﻿using Application.Interfaces;
-using System.Net.Mail;
+using Application.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System.Net;
-
+using System.Net.Mail;
 
 namespace Infrastructure.Service.Services;
-internal class EmailSender: IEmailSender
-{
-    public Task SendEmailAsync(string email, string subject, string message)
-    {
-        string fromMail = "whereandhow02@gmail.com";
-        string fromPassword = "ustkdafartsnnaqc";
 
+internal class EmailSender(IConfiguration configuration) : IEmailSender
+{
+    private readonly string _fromMail = configuration["Email:Address"];
+    private readonly string _fromPassword = configuration["Email:Password"];
+
+    public Task SendEmailAsync(string email, string subject, string message)
+        => Send(email, subject, message, isHtml: false);
+
+    public Task SendHtmlEmailAsync(string email, string subject, string htmlBody)
+        => Send(email, subject, htmlBody, isHtml: true);
+
+    private Task Send(string email, string subject, string body, bool isHtml)
+    {
         var client = new SmtpClient("smtp.gmail.com", 587)
         {
             EnableSsl = true,
-            Credentials = new NetworkCredential(fromMail, fromPassword)
+            Credentials = new NetworkCredential(_fromMail, _fromPassword)
         };
 
-        var mailMessage = new MailMessage
+        var mail = new MailMessage
         {
-            From = new MailAddress(fromMail, "Where & How"),
+            From = new MailAddress(_fromMail, "Where & How"),
             Subject = subject,
-            Body = message,
-            IsBodyHtml = false
+            Body = body,
+            IsBodyHtml = isHtml
         };
-        mailMessage.To.Add(email);
+        mail.To.Add(email);
 
-
-        return client.SendMailAsync(mailMessage);
+        return client.SendMailAsync(mail);
     }
 }
