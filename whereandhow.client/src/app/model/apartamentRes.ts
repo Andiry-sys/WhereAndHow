@@ -7,7 +7,7 @@ export interface ApartametRes {
   address: {
     street: string;
     city: string;
-    numberHouse: string
-  };
-  description:string;
+    numberHouse: string;
+  } | null;
+  description: string;
 }
