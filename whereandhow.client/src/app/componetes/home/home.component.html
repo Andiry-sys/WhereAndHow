@@ -1,14 +1,6 @@
 <div class="outer">
+  @if (apartments.length !== 0) {
 
-  @if (apartments.length === 0) {
-    <div>
-      <div class="no-results-container text-center mt-5">
-        <h4 class="no-results-heading">Помешкання не знайдено</h4>
-        <p class="no-results-text">На жаль, за вашим запитом нічого не знайдено. Спробуйте змінити фільтри пошуку.</p>
-        <a routerLink="/apartment-search" class="btn btn-primary mt-3">Повернутися до пошуку</a>
-      </div>
-    </div>
-  } @else {
     <div class="apartment-list">
       @for (apartment of apartments; track apartment.id) {
         <div class="apartment-item">
@@ -21,26 +13,37 @@
                 @for (image of apartment.photos; track image) {
                   <slide>
                     <img src="{{ image.imagePath }}"
-                      alt="Apartment Image"
-                      height="300px"
-                      width="300px" />
-                    </slide>
-                  }
-                </carousel>
-              </div>
-              <p class="apartment-price">
-                Ціна за добу: {{ apartment.price }} ₴
-              </p>
-              <p class="apartment-type">
-                Кількість кімнат: {{ apartment.typeRoom }}
-              </p>
-              <p class="apartment-address">Місто: {{ apartment.address.city }}</p>
-              <a [routerLink]="['/current-apartament']"
-                [queryParams]="{ id: apartment.id }"
-              class="btn btn-primary btn-block mt-4 w-100">Додаткова Інформація</a>
+                         alt="Apartment Image"
+                         height="300px"
+                         width="300px" />
+                  </slide>
+                }
+              </carousel>
             </div>
+            <p class="apartment-price">
+              Ціна за добу: {{ apartment.price }} ₴
+            </p>
+            <p class="apartment-type">
+              Кількість кімнат: {{ apartment.typeRoom }}
+            </p>
+            @if (apartment.address) {
+              <p class="apartment-address">Місто: {{ apartment.address.city }}</p>
+            }
+            <a [routerLink]="['/current-apartament']"
+               [queryParams]="{ id: apartment.id }"
+               class="btn btn-primary btn-block mt-4 w-100">Додаткова Інформація</a>
           </div>
-        }
+        </div>
+      }
+    </div>
+
+  } @else {
+    <div>
+      <div class="no-results-container text-center mt-5">
+        <h4 class="no-results-heading">Помешкання не знайдено</h4>
+        <p class="no-results-text">На жаль, за вашим запитом нічого не знайдено. Спробуйте змінити фільтри пошуку.</p>
+        <a routerLink="/search-apartment" class="btn btn-primary mt-3">Повернутися до пошуку</a>
       </div>
+    </div>
     }
   </div>

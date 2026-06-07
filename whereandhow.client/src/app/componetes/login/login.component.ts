@@ -1,4 +1,5 @@
-import {FormBuilder, FormControl, FormGroup, Validator, Validators} from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
@@ -41,7 +42,7 @@ export class LoginComponent {
             this.router.navigate(['']);
           }
         },
-        error: (err: any) => {
+        error: (err: HttpErrorResponse) => {
           console.error('Login error:', err);
           alert('Помилка входу. Перевірте дані.');
         },

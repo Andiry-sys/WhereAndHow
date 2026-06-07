@@ -25,11 +25,11 @@ export class ApartamentService {
     return this.http.get<ApartametRes>(`${this.apartamentURL}/room/${Id}`);
   }
 
-  public createApartament(apartament: FormData): Observable<any> {
+  public createApartament(apartament: FormData): Observable<string> {
     return this.http.post(
       `${this.apartamentURL}/addroom`,
       apartament,
-     { responseType: 'text' as const }
+      { responseType: 'text' }
     );
   }
 

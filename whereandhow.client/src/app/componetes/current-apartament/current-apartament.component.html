@@ -1,29 +1,63 @@
 <div class="outer d-flex justify-content-center align-items-start pt-5">
   <div class="apartment-item">
-    <h3 class="apartment-name text-center">{{ apartament.name }}</h3>
 
-    <div class="apartment-images image-item mb-3">
-      <carousel>
-        @for (image of apartament.photos; track image) {
-          <slide>
-            <img [src]="image.imagePath" alt="Apartment Image" />
-          </slide>
-        }
-      </carousel>
-    </div>
+    @if (photos.length > 0) {
+      <div class="apartment-images image-item mb-3">
+        <carousel>
+          @for (image of photos; track image) {
+            <slide>
+              <img [src]="image.imagePath" alt="Apartment Image" />
+            </slide>
+          }
+        </carousel>
+      </div>
+    }
 
-    <p class="apartment-price">Ціна за добу: {{ apartament.price }} ₴</p>
-    <p class="apartment-type">Тип помешкання: {{ apartament.typeRoom }}</p>
-    <p class="card-text"><strong>Опис:</strong> {{ apartament.description }}</p>
-    <p class="apartment-address">Місто: {{ apartament.address.city }}</p>
-    <p class="apartment-address">
-      Адреса: {{ apartament.address.street }}, {{ apartament.address.numberHouse }}
-    </p>
+    <form [formGroup]="apartmentForm">
 
-    <div class="form-group">
+      <div class="form-group pt-3">
+        <label for="name">Назва:</label>
+        <input formControlName="name" type="text" id="name" readonly class="form-control" />
+      </div>
+
+      <div class="form-group pt-3">
+        <label for="price">Ціна за добу (₴):</label>
+        <input formControlName="price" type="number" id="price" readonly class="form-control" />
+      </div>
+
+      <div class="form-group pt-3">
+        <label for="typeRoom">Тип помешкання:</label>
+        <input formControlName="typeRoom" type="text" id="typeRoom" readonly class="form-control" />
+      </div>
+
+      <div class="form-group pt-3">
+        <label for="description">Опис:</label>
+        <textarea formControlName="description" id="description" rows="4" readonly class="form-control"></textarea>
+      </div>
+
+      <div class="form-group pt-3">
+        <label for="city">Місто:</label>
+        <input formControlName="city" type="text" id="city" readonly class="form-control" />
+      </div>
+
+      <div class="form-group pt-3">
+        <label for="street">Вулиця:</label>
+        <input formControlName="street" type="text" id="street" readonly class="form-control" />
+      </div>
+
+      <div class="form-group pt-3">
+        <label for="numberHouse">Будинок:</label>
+        <input formControlName="numberHouse" type="text" id="numberHouse" readonly class="form-control" />
+      </div>
+
+    </form>
+
+    <div class="form-group pt-3">
       <label for="checkInDate">Дата в'їзду:</label>
       <input type="date" id="checkInDate" class="form-control" [(ngModel)]="order.CheckInDate" required />
+    </div>
 
+    <div class="form-group pt-3">
       <label for="checkOutDate">Дата виїзду:</label>
       <input type="date" id="checkOutDate" class="form-control" [(ngModel)]="order.CheckOutDate" />
     </div>
@@ -31,5 +65,6 @@
     <button (click)="orderApartament()" class="btn btn-primary w-100 mt-3">
       Замовити помешкання
     </button>
+
   </div>
 </div>

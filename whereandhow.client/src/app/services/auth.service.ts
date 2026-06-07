@@ -2,7 +2,14 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { UserLoginRequestDto } from '../../app/Model/userLoginRequestDto';
+import { UserLoginRequestDto } from '../Model/userLoginRequestDto';
+import { UserRegisterRequestDto } from '../Model/userRegisterRequestDto';
+
+interface JwtPayload {
+  exp?: number;
+  nameid?: string;
+  IsLosser?: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -13,14 +20,14 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  register(user: any): Observable<any> {
-    return this.http.post<any>(`${this.baseURL}register`, user).pipe(
+  register(user: UserRegisterRequestDto): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.baseURL}register`, user).pipe(
       tap((res) => this.setToken(res.token))
     );
   }
 
-  login(user: UserLoginRequestDto): Observable<any> {
-    return this.http.post<any>(`${this.baseURL}login`, user).pipe(
+  login(user: UserLoginRequestDto): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.baseURL}login`, user).pipe(
       tap((res) => this.setToken(res.token))
     );
   }
@@ -63,9 +70,7 @@ export class AuthService {
     if (!token) return null;
 
     const payload = this.decodeToken(token);
-    return payload?.[
-      'nameid'
-    ] ?? null;
+    return payload?.nameid ?? null;
   }
 
   isLosser(): boolean {
@@ -76,11 +81,11 @@ export class AuthService {
     return payload?.IsLosser === 'True';
   }
 
-  private decodeToken(token: string): any {
+  private decodeToken(token: string): JwtPayload | null {
     try {
       const payloadBase64 = token.split('.')[1];
       const decodedPayload = atob(payloadBase64);
-      return JSON.parse(decodedPayload);
+      return JSON.parse(decodedPayload) as JwtPayload;
     } catch {
       return null;
     }

@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class UpdateUserprofileService {
   private baseURL = '/api/user';
-  constructor(private http: HttpClient, private authService:AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   private getLoggedInUserId() {
     return this.authService.getUserId();
@@ -26,17 +27,16 @@ export class UpdateUserprofileService {
     return this.http.get<User>(`${this.baseURL}/${Id}`);
   }
 
-  update(user: any) {
-    return this.http
-      .put<any>(`${this.baseURL}/update/${this.getLoggedInUserId()}`, user)
-      .subscribe(
-        (response: any) => {
-          const token = response.token;
-          this.authService.setToken(token)
+  update(user: User): void {
+    this.http
+      .put<{ token: string }>(`${this.baseURL}/update/${this.getLoggedInUserId()}`, user)
+      .subscribe({
+        next: (response) => {
+          this.authService.setToken(response.token);
         },
-        (error: any) => {
+        error: (error: unknown) => {
           console.error(error);
-        }
-      );
+        },
+      });
   }
 }

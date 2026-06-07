@@ -98,8 +98,8 @@ export class CreateapartamentComponent implements OnInit {
     });
   }
 
-  onFilesSelected(event: any): void {
-    const files: File[] = event.target.files;
+  onFilesSelected(event: Event): void {
+    const files = (event.target as HTMLInputElement).files;
 
     if (files && files.length > 0) {
       this.apartament.images = Array.from(files);

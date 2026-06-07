@@ -1,13 +1,13 @@
 import { OrderService } from './../../services/order.service';
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap } from 'rxjs';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ApartametRes } from '../../Model/apartamentRes';
 import { OrderDTO } from '../../Model/orderDTO';
 import { ApartamentService } from '../../services/apartament-service.service';
 import { AuthService } from '../../services/auth.service';
 import { UpdateUserprofileService } from '../../services/update-userprofile.service';
-import { FormGroup} from "@angular/forms";
-import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-current-apartament',
@@ -15,79 +15,98 @@ import { environment } from '../../../environments/environment';
     styleUrls: ['./current-apartament.component.css'],
     standalone: false
 })
-export class CurrentApartamentComponent {
-  public currentAppartament!: FormGroup;
-  public apartament: ApartametRes = {
-    id: '',
-    name: '',
-    price: 0,
-    address: {
-      city: '',
-      numberHouse: '',
-      street: '',
-    },
-    typeRoom: '',
-    photos: [],
-    description:''
-  };
+export class CurrentApartamentComponent implements OnInit {
+  public photos: { imagePath: string }[] = [];
+
+  apartmentForm = new FormGroup({
+    name:        new FormControl(''),
+    price:       new FormControl(0),
+    typeRoom:    new FormControl(''),
+    description: new FormControl(''),
+    city:        new FormControl(''),
+    street:      new FormControl(''),
+    numberHouse: new FormControl(''),
+  });
+
   public order: OrderDTO = {
     CheckOutDate: '',
-    CheckInDate: '',
+    CheckInDate:  '',
     apartamentId: '',
-    userId: '',
-
+    userId:       '',
   };
+
   constructor(
-    private route: ActivatedRoute,
+    private route:             ActivatedRoute,
     private apartamentService: ApartamentService,
-    private userService: UpdateUserprofileService,
-    private orderService:OrderService,
-    private authService: AuthService,
-    private navigator: Router
+    private userService:       UpdateUserprofileService,
+    private orderService:      OrderService,
+    private authService:       AuthService,
+    private navigator:         Router,
+    private cdr:               ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      this.apartamentService
-        .getApartamentById(params['id'])
-        .subscribe((res) => {
-          this.apartament = res;
-          this.order.apartamentId = this.apartament.id;
-        });
-    });
+  ngOnInit(): void {
+    this.route.queryParams
+      .pipe(switchMap(params => this.apartamentService.getApartamentById(params['id'])))
+      .subscribe({
+        next: (res: ApartametRes) => {
+          this.photos = res.photos;
+          this.order.apartamentId = res.id;
 
-    this.userService.getUser().subscribe((res) => {
-      this.order.userId = res.id;
+          this.apartmentForm.patchValue({
+            name:        res.name,
+            price:       res.price,
+            typeRoom:    res.typeRoom,
+            description: res.description,
+            city:        res.address?.city        ?? '',
+            street:      res.address?.street      ?? '',
+            numberHouse: res.address?.numberHouse ?? '',
+          });
+
+          this.cdr.detectChanges();
+          console.log('Apartment model:', res);
+        },
+        error: (err) => {
+          console.error('[CurrentApartament] Failed to load apartment:', err);
+        }
+      });
+
+    this.userService.getUser().subscribe({
+      next: (res) => {
+        this.order.userId = res.id;
+      },
+      error: (err) => {
+        console.error('[CurrentApartament] Failed to load user:', err);
+      }
     });
   }
 
-  orderApartament() {
-
-    if(this.authService.isLoggedIn()){
+  orderApartament(): void {
+    if (this.authService.isLoggedIn()) {
       if (!this.order.CheckInDate || !this.order.CheckOutDate) {
-        alert("Ви не вибрали дату в'їзду або виїзду")
+        alert("Ви не вибрали дату в'їзду або виїзду");
+        return;
       }
-      const checkInDate = new Date(this.order.CheckInDate);
+      const checkInDate  = new Date(this.order.CheckInDate);
       const checkOutDate = new Date(this.order.CheckOutDate);
 
       if (checkInDate >= checkOutDate) {
         alert("Дата заїзду пізніша або співпадає з датою виїзду");
+        return;
       }
-    this.orderService.sendOrder(this.order).subscribe(()=>{
-      window.alert('Апартамент замовлено повідомлення буде надіслано на вашу електронну скиньку');
-      this.navigator.navigate(['']);
-    },
-    (error)=>{
-      console.log(error);
 
-    })
+      this.orderService.sendOrder(this.order).subscribe({
+        next: () => {
+          window.alert('Апартамент замовлено повідомлення буде надіслано на вашу електронну скиньку');
+          this.navigator.navigate(['']);
+        },
+        error: (error) => {
+          console.error('[CurrentApartament] Order failed:', error);
+        }
+      });
+    } else {
+      alert('Ви повинні бути залогіненим');
+      this.navigator.navigate(['login']);
+    }
   }
-  else{
-    alert('Ви повинні бути залогіненим');
-    this.navigator.navigate(['login'])
-  }
-  }
-
-
-
 }
