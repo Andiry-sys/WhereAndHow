@@ -1,5 +1,5 @@
 import {FormBuilder, FormControl, FormGroup, Validator, Validators} from '@angular/forms';
-import { AuthService } from './../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserLoginRequestDto } from '../../Model/userLoginRequestDto'
@@ -21,7 +21,7 @@ export class LoginComponent {
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
-      password: ['', Validators.required], // має бути одна велика буква, один символ, шість взгалі
+      password: ['', Validators.required],
     });
   }
   onLogin() {
@@ -45,7 +45,7 @@ export class LoginComponent {
           console.error('Login error:', err);
           alert('Помилка входу. Перевірте дані.');
         },
-      });      
+      });
     }
 
   }

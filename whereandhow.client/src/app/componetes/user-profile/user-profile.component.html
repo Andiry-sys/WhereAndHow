@@ -6,120 +6,116 @@
           <div class="panel-heading">
             <h3 class="pt-3 font-weight-bold">Оновити дані</h3>
           </div>
-
-          <div *ngIf="user" class="panel-body p-3">
-            <form>
-              <div class="form-group pt-3">
-                <div class="input-field">
-                  <span aria-hidden="true"></span>
-                  <input
-                    placeholder="Ім'я"
-                    type="text"
-                    id="name"
-                    name="name"
-                    [(ngModel)]="user.name"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div class="form-group pt-3">
-                <div class="input-field">
-                  <input
-                    placeholder="Прізвище"
-                    type="text"
-                    id="secondName"
-                    name="sureName"
-                    [(ngModel)]="user.sureName"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div class="form-group pt-3">
-                <div class="input-field">
-                  <input
-                    placeholder="Електронна пошта"
-                    type="email"
-                    id="email"
-                    name="email"
-                    [(ngModel)]="user.email"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div class="form-group pt-3">
-                <div class="input-field">
-                  <input
-                    placeholder="Пароль"
-                    type="text"
-                    id="password"
-                    name="password"
-                    [(ngModel)]="user.password"
-                  />
-                </div>
-              </div>
-
-              <div class="form-group pt-3">
-                <div class="input-field">
-                  <input
-                    placeholder="Номер телефону"
-                    type="tel"
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    [(ngModel)]="user.phoneNumber"
-                    required
-                  />
-                </div>
-              </div>
-
-              <!-- Partner section -->
-              <div class="form-group pt-3">
-                <!-- Already a partner -->
-                <div *ngIf="user.isLosser" class="alert alert-success py-2 mb-0">
-                  ✅ Ви вже є партнером платформи.
-                </div>
-
-                <!-- Request sent successfully -->
-                <div *ngIf="partnerMessage" class="alert alert-info py-2 mb-0">
-                  {{ partnerMessage }}
-                </div>
-
-                <!-- Error from server -->
-                <div *ngIf="partnerError" class="alert alert-danger py-2 mb-0">
-                  {{ partnerError }}
-                </div>
-
-                <!-- Checkbox only when not already a partner and no pending success -->
-                <ng-container *ngIf="!user.isLosser && !partnerMessage">
-                  <div class="d-flex align-items-center gap-2 mt-2">
+          <div class="panel-body p-3">
+            <form [formGroup]="profileForm">
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <span aria-hidden="true"></span>
                     <input
-                      type="checkbox"
-                      id="wantsPartner"
-                      name="wantsPartner"
-                      [(ngModel)]="wantsPartner"
-                    />
-                    <label for="wantsPartner" class="partner mb-0">
-                      Хочете бути партнером?
-                    </label>
+                      placeholder="Ім'я"
+                      type="text"
+                      id="name"
+                      formControlName="name"
+                      required
+                      />
                   </div>
-                  <small *ngIf="wantsPartner" class="text-warning d-block mt-1">
-                    Після збереження адміністратор отримає запит на підтвердження.
-                  </small>
-                </ng-container>
-              </div>
-
-              <button
-                (click)="onSubmit()"
-                type="submit"
-                [disabled]="isSubmittingPartner"
-                class="btn btn-primary btn-block mt-4 w-100"
-              >
-                <span *ngIf="isSubmittingPartner">Надсилання...</span>
-                <span *ngIf="!isSubmittingPartner">Зберегти зміни</span>
-              </button>
-            </form>
+                </div>
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <input
+                      placeholder="Прізвище"
+                      type="text"
+                      id="secondName"
+                      formControlName="sureName"
+                      required
+                      />
+                  </div>
+                </div>
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <input
+                      placeholder="Електронна пошта"
+                      type="email"
+                      id="email"
+                      formControlName="email"
+                      required
+                      />
+                  </div>
+                </div>
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <input
+                      placeholder="Пароль"
+                      type="text"
+                      id="password"
+                      formControlName="password"
+                      />
+                  </div>
+                </div>
+                <div class="form-group pt-3">
+                  <div class="input-field">
+                    <input
+                      placeholder="Номер телефону"
+                      type="tel"
+                      id="phoneNumber"
+                      formControlName="phoneNumber"
+                      required
+                      />
+                  </div>
+                </div>
+                <!-- Partner section -->
+                <div class="form-group pt-3">
+                  <!-- Already a partner -->
+                  @if (user?.isLosser) {
+                    <div class="alert alert-success py-2 mb-0">
+                      ✅ Ви вже є партнером платформи.
+                    </div>
+                  }
+                  <!-- Request sent successfully -->
+                  @if (partnerMessage) {
+                    <div class="alert alert-info py-2 mb-0">
+                      {{ partnerMessage }}
+                    </div>
+                  }
+                  <!-- Error from server -->
+                  @if (partnerError) {
+                    <div class="alert alert-danger py-2 mb-0">
+                      {{ partnerError }}
+                    </div>
+                  }
+                  <!-- Checkbox only when not already a partner and no pending success -->
+                  @if (!user?.isLosser && !partnerMessage) {
+                    <div class="d-flex align-items-center gap-2 mt-2">
+                      <input
+                        type="checkbox"
+                        id="wantsPartner"
+                        formControlName="wantsPartner"
+                        />
+                      <label for="wantsPartner" class="partner mb-0">
+                        Хочете бути партнером?
+                      </label>
+                    </div>
+                    @if (wantsPartner) {
+                      <small class="text-warning d-block mt-1">
+                        Після збереження адміністратор отримає запит на підтвердження.
+                      </small>
+                    }
+                  }
+                </div>
+                <button
+                  (click)="onSubmit()"
+                  type="submit"
+                  [disabled]="isSubmittingPartner"
+                  class="btn btn-primary btn-block mt-4 w-100"
+                  >
+                  @if (isSubmittingPartner) {
+                    <span>Надсилання...</span>
+                  }
+                  @if (!isSubmittingPartner) {
+                    <span>Зберегти зміни</span>
+                  }
+                </button>
+              </form>
           </div>
         </div>
       </div>

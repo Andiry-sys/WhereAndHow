@@ -4,9 +4,11 @@
 
     <div class="apartment-images image-item mb-3">
       <carousel>
-        <slide *ngFor="let image of apartament.photos">
-          <img [src]="image.imagePath" alt="Apartment Image" />
-        </slide>
+        @for (image of apartament.photos; track image) {
+          <slide>
+            <img [src]="image.imagePath" alt="Apartment Image" />
+          </slide>
+        }
       </carousel>
     </div>
 

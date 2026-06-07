@@ -16,6 +16,8 @@ public static class ConfigurationService
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IPartnerService, PartnerService>();
+        // IAIService is registered as a typed HttpClient in Program.cs
+        // (AddHttpClient<IAIService, AIService>) — do not add AddScoped here to avoid double registration.
         return services;
     }
 }

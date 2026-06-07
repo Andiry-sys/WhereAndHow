@@ -2,7 +2,7 @@ import { OrderService } from './../../services/order.service';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApartametRes } from '../../Model/apartamentRes';
-import { OrderDTO } from '../../Model/OrderDTO';
+import { OrderDTO } from '../../Model/orderDTO';
 import { ApartamentService } from '../../services/apartament-service.service';
 import { AuthService } from '../../services/auth.service';
 import { UpdateUserprofileService } from '../../services/update-userprofile.service';

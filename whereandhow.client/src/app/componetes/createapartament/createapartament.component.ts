@@ -2,11 +2,14 @@ import { Observable } from 'rxjs';
 import { AddressService } from './../../services/address.service';
 import { ApartamentService } from './../../services/apartament-service.service';
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Addresses } from '../../Model/Addresses';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { UpdateUserprofileService } from '../../services/update-userprofile.service';
 import { Apartamet } from '../../Model/Apartament';
+import { AiService } from '../../services/ai.service';
+import { AIAnalyzeResponse } from '../../Model/aiAnalyzeResponse';
 
 @Component({
     selector: 'app-createapartament',
@@ -35,13 +38,40 @@ export class CreateapartamentComponent implements OnInit {
     'Три спальні',
   ];
   public selectedFileName: string = '';
+  public aiLoading: boolean = false;
+  public aiResult: AIAnalyzeResponse | null = null;
 
   constructor(
     private apartmentService: ApartamentService,
     private addressServices: AddressService,
     private router: Router,
-    private userService: UpdateUserprofileService
+    private userService: UpdateUserprofileService,
+    private aiService: AiService
   ) {}
+
+  public improveDescription(): void {
+    const current = this.description.value as string;
+    if (!current || !current.trim()) {
+      alert('Введіть опис перед покращенням');
+      return;
+    }
+
+    this.aiLoading = true;
+    this.aiResult = null;
+
+    this.aiService.analyzeDescription(current).subscribe({
+      next: (res: AIAnalyzeResponse) => {
+        this.aiResult = res;
+        this.apartmentForm.patchValue({ description: res.improvedDescription });
+        this.aiLoading = false;
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('AI analyze error:', err);
+        this.aiLoading = false;
+        alert('Не вдалося покращити опис. Спробуйте пізніше.');
+      },
+    });
+  }
 
   private existsLosser(): void {
     this.userService.getUser().subscribe((data) => {
@@ -56,14 +86,15 @@ export class CreateapartamentComponent implements OnInit {
     });
     this.existsLosser();
 
+    // Initialize controls with the same defaults the `apartament` object used,
+    // so the form's initial state matches the previous ngModel-bound behavior.
     this.apartmentForm = new FormGroup({
-      name: new FormControl(),
-      price: new FormControl(),
+      name: new FormControl(''),
+      price: new FormControl(0),
       images: new FormControl(),
-      addressId: new FormControl(),
-      typeRoom: new FormControl(),
-      description: new FormControl()
-      
+      addressId: new FormControl(''),
+      typeRoom: new FormControl(''),
+      description: new FormControl('')
     });
   }
 
@@ -83,16 +114,19 @@ export class CreateapartamentComponent implements OnInit {
       this.apartmentForm.controls[controlName].markAsTouched();
     });
     if (this.apartmentForm.valid && this.isLosser) {
+      // Read text/select values from the reactive form; images come from the
+      // file picker (onFilesSelected) and ownerId from the loaded user.
+      const value = this.apartmentForm.value;
       const formData = new FormData();
-      formData.append('name', this.apartament.name);
-      formData.append('price', this.apartament.price.toString());
-      formData.append('typeRoom', this.apartament.typeRoom);
+      formData.append('name', value.name);
+      formData.append('price', value.price.toString());
+      formData.append('typeRoom', value.typeRoom);
       for (let i = 0; i < this.apartament.images.length; i++) {
         formData.append('images', this.apartament.images[i]);
       }
-      formData.append('addressId', this.apartament.addressId);
+      formData.append('addressId', value.addressId);
       formData.append('ownerId', this.ownerId);
-      formData.append('description',this.apartament.description)
+      formData.append('description', value.description)
       this.apartmentService.createApartament(formData).subscribe(() => {
         this.apartmentForm.reset();
         this.router.navigate(['all-apartments']);

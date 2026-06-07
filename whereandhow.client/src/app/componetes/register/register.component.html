@@ -11,31 +11,39 @@
               <div class="form-group pt-3">
                 <div class="input-field">
                   <span class="fa fa-user-circle-o p-2"
-                        aria-hidden="true"></span>
+                  aria-hidden="true"></span>
                   <input formControlName="Name" id="Name" type="text" placeholder="Ім'я" required maxlength="20" />
 
                 </div>
-                <div class="form-text text-danger" *ngIf="Name.errors?.['required'] && Name.touched">
-                  Введіть ім'я
-                </div>
-                <div class="form-text text-danger" *ngIf="Name.errors?.['minlength']">
-                  Ім'я має містити більше 2 символів
-                </div>
+                @if (Name.errors?.['required'] && Name.touched) {
+                  <div class="form-text text-danger">
+                    Введіть ім'я
+                  </div>
+                }
+                @if (Name.errors?.['minlength']) {
+                  <div class="form-text text-danger">
+                    Ім'я має містити більше 2 символів
+                  </div>
+                }
 
               </div>
               <div class="form-group pt-3">
                 <div class="input-field">
                   <span class="fa fa-user-circle-o p-2"
-                        aria-hidden="true"></span>
+                  aria-hidden="true"></span>
                   <input formControlName="SureName" type="text" placeholder="Прізвище" required maxlength="20" />
                 </div>
 
-                <div class="form-text text-danger" *ngIf="SureName.errors?.['required'] && SureName.touched">
-                  Введіть прізвище
-                </div>
-                <div class="form-text text-danger" *ngIf="SureName.errors?.['minlength']">
-                  Прізвище має містити більше 2 символів
-                </div>
+                @if (SureName.errors?.['required'] && SureName.touched) {
+                  <div class="form-text text-danger">
+                    Введіть прізвище
+                  </div>
+                }
+                @if (SureName.errors?.['minlength']) {
+                  <div class="form-text text-danger">
+                    Прізвище має містити більше 2 символів
+                  </div>
+                }
               </div>
 
               <div class="form-group pt-3">
@@ -43,12 +51,16 @@
                   <span class="fa fa-envelope-o p-2" aria-hidden="true"></span>
                   <input formControlName="email" type="email" placeholder="Електронна скринька" required />
                 </div>
-                <div class="form-text text-danger" *ngIf="email.errors?.['required'] && email.touched">
-                  Введіть почту
-                </div>
-                <div class="form-text text-danger" *ngIf="email.errors?.['email']">
-                  Введіть дійсну електронну скриньку
-                </div>
+                @if (email.errors?.['required'] && email.touched) {
+                  <div class="form-text text-danger">
+                    Введіть почту
+                  </div>
+                }
+                @if (email.errors?.['email']) {
+                  <div class="form-text text-danger">
+                    Введіть дійсну електронну скриньку
+                  </div>
+                }
               </div>
 
               <div class="form-group pt-3">
@@ -56,12 +68,16 @@
                   <span class="fa fa-mobile p-2" aria-hidden="true"></span>
                   <input formControlName="PhoneNumber" type="text" placeholder="Номер телефону" required />
                 </div>
-                <div class="form-text text-danger" *ngIf="PhoneNumber.errors?.['required'] && PhoneNumber.touched">
-                  Введіть номер телефону
-                </div>
-                <div class="form-text text-danger" *ngIf="PhoneNumber.errors?.['pattern']">
-                  Формат -> (0976734070)
-                </div>
+                @if (PhoneNumber.errors?.['required'] && PhoneNumber.touched) {
+                  <div class="form-text text-danger">
+                    Введіть номер телефону
+                  </div>
+                }
+                @if (PhoneNumber.errors?.['pattern']) {
+                  <div class="form-text text-danger">
+                    Формат -> (0976734070)
+                  </div>
+                }
               </div>
 
               <div class="form-group pt-3">
@@ -70,17 +86,21 @@
                   <input [type]="type" formControlName="password" type="password" placeholder="Пароль" required />
                   <span (click)="hideShowPass()" class="fa {{eyeIcon}}"></span>
                 </div>
-                <div class="form-text text-danger" *ngIf="password.errors?.['required'] && password.touched">
-                  Введіть пароль
-                </div>
-                <div class="form-text text-danger" *ngIf="password.errors?.['pattern']">
-                  Мінімум одна велика літера, одне число, один символ (&#64;#$%^&+=!*) і мінімум 5 символів
-                </div>
+                @if (password.errors?.['required'] && password.touched) {
+                  <div class="form-text text-danger">
+                    Введіть пароль
+                  </div>
+                }
+                @if (password.errors?.['pattern']) {
+                  <div class="form-text text-danger">
+                    Мінімум одна велика літера, одне число, один символ (&#64;#$%^&+=!*) і мінімум 5 символів
+                  </div>
+                }
               </div>
 
               <button (click)="onRegister()"
-                      type="submit"
-                      class="btn btn-primary btn-block mt-4 w-100">
+                type="submit"
+                class="btn btn-primary btn-block mt-4 w-100">
                 Зареєструватись
               </button>
               <div class="text-center pt-4 text-white">

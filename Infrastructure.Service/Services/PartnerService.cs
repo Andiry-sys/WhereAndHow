@@ -140,6 +140,10 @@ internal class PartnerService(
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]!));
         var handler = new JwtSecurityTokenHandler();
+        // Keep the original JWT claim names ("sub", "jti") instead of letting the
+        // handler remap them to long XML URIs — otherwise FindFirstValue("sub")
+        // returns null and the token is wrongly rejected as missing claims.
+        handler.InboundClaimTypeMap.Clear();
 
         try
         {
@@ -182,21 +186,21 @@ internal class PartnerService(
     // Email / HTML builders
     // -------------------------------------------------------------------------
 
-    private static string BuildAdminEmail(User user, string confirmUrl) => $"""
+    private static string BuildAdminEmail(User user, string confirmUrl) => $$"""
         <!DOCTYPE html>
         <html lang="en">
         <head>
           <meta charset="UTF-8"/>
           <style>
-            body {{ font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }}
-            .card {{ background:#fff; border-radius:8px; padding:32px; max-width:560px; margin:auto; }}
-            h2 {{ color:#333; }}
-            table {{ width:100%; border-collapse:collapse; margin:20px 0; }}
-            td {{ padding:8px 12px; border-bottom:1px solid #eee; }}
-            td:first-child {{ font-weight:bold; color:#555; width:40%; }}
-            .btn {{ display:inline-block; padding:14px 28px; background:#2563eb; color:#fff;
-                    text-decoration:none; border-radius:6px; font-size:16px; margin-top:24px; }}
-            .footer {{ font-size:12px; color:#999; margin-top:24px; }}
+            body { font-family: Arial, sans-serif; background:#f4f4f4; padding:20px; }
+            .card { background:#fff; border-radius:8px; padding:32px; max-width:560px; margin:auto; }
+            h2 { color:#333; }
+            table { width:100%; border-collapse:collapse; margin:20px 0; }
+            td { padding:8px 12px; border-bottom:1px solid #eee; }
+            td:first-child { font-weight:bold; color:#555; width:40%; }
+            .btn { display:inline-block; padding:14px 28px; background:#2563eb; color:#fff;
+                    text-decoration:none; border-radius:6px; font-size:16px; margin-top:24px; }
+            .footer { font-size:12px; color:#999; margin-top:24px; }
           </style>
         </head>
         <body>
@@ -204,14 +208,14 @@ internal class PartnerService(
             <h2>New Partner Request</h2>
             <p>A user has requested partner status on <strong>Where &amp; How</strong>.</p>
             <table>
-              <tr><td>Full Name</td><td>{user.Name} {user.SureName}</td></tr>
-              <tr><td>Email</td><td>{user.Email}</td></tr>
-              <tr><td>Phone</td><td>{user.PhoneNumber ?? "—"}</td></tr>
-              <tr><td>User ID</td><td>{user.Id}</td></tr>
-              <tr><td>Requested at</td><td>{DateTime.UtcNow:yyyy-MM-dd HH:mm} UTC</td></tr>
+              <tr><td>Full Name</td><td>{{user.Name}} {{user.SureName}}</td></tr>
+              <tr><td>Email</td><td>{{user.Email}}</td></tr>
+              <tr><td>Phone</td><td>{{user.PhoneNumber ?? "—"}}</td></tr>
+              <tr><td>User ID</td><td>{{user.Id}}</td></tr>
+              <tr><td>Requested at</td><td>{{DateTime.UtcNow:yyyy-MM-dd HH:mm}} UTC</td></tr>
             </table>
             <p>Click the button below to approve this request. The link is valid for 24 hours.</p>
-            <a href="{confirmUrl}" class="btn">Confirm Partner</a>
+            <a href="{{confirmUrl}}" class="btn">Confirm Partner</a>
             <p class="footer">
               If you did not expect this email, please ignore it.<br/>
               Do not share this link — it grants partner privileges.
@@ -221,27 +225,27 @@ internal class PartnerService(
         </html>
         """;
 
-    private static string BuildHtmlPage(string title, string message, bool success) => $"""
+    private static string BuildHtmlPage(string title, string message, bool success) => $$"""
         <!DOCTYPE html>
         <html lang="en">
         <head>
           <meta charset="UTF-8"/>
-          <title>{title}</title>
+          <title>{{title}}</title>
           <style>
-            body {{ font-family:Arial,sans-serif; background:#f4f4f4; display:flex;
-                    align-items:center; justify-content:center; min-height:100vh; margin:0; }}
-            .card {{ background:#fff; border-radius:8px; padding:48px 40px; max-width:480px;
-                    text-align:center; box-shadow:0 2px 12px rgba(0,0,0,.1); }}
-            .icon {{ font-size:56px; }}
-            h1 {{ color:{(success ? "#16a34a" : "#dc2626")}; margin:16px 0 8px; }}
-            p {{ color:#555; font-size:15px; }}
+            body { font-family:Arial,sans-serif; background:#f4f4f4; display:flex;
+                    align-items:center; justify-content:center; min-height:100vh; margin:0; }
+            .card { background:#fff; border-radius:8px; padding:48px 40px; max-width:480px;
+                    text-align:center; box-shadow:0 2px 12px rgba(0,0,0,.1); }
+            .icon { font-size:56px; }
+            h1 { color:{{(success ? "#16a34a" : "#dc2626")}}; margin:16px 0 8px; }
+            p { color:#555; font-size:15px; }
           </style>
         </head>
         <body>
           <div class="card">
-            <div class="icon">{(success ? "✅" : "❌")}</div>
-            <h1>{title}</h1>
-            <p>{message}</p>
+            <div class="icon">{{(success ? "✅" : "❌")}}</div>
+            <h1>{{title}}</h1>
+            <p>{{message}}</p>
           </div>
         </body>
         </html>

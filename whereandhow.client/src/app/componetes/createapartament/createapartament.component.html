@@ -6,18 +6,20 @@
     <form [formGroup]="apartmentForm" enctype="multipart/form-data">
       <div class="form-group pt-3">
         <label for="name">Назва помешкання:</label>
-        <input [(ngModel)]="apartament.name" formControlName="name" type="text" id="name" required />
+        <input formControlName="name" type="text" id="name" required />
       </div>
 
       <div class="form-group pt-3">
         <label for="price">Ціна за добу (₴):</label>
-        <input [(ngModel)]="apartament.price" formControlName="price" type="number" id="price" min="10" max="10000" required />
+        <input formControlName="price" type="number" id="price" min="10" max="10000" required />
       </div>
 
       <div class="form-group pt-3">
         <label for="typeRoom">Тип помешкання:</label>
-        <select [(ngModel)]="apartament.typeRoom" formControlName="typeRoom" id="typeRoom" class="form-select" required>
-          <option *ngFor="let type of apartmentTypes" [value]="type">{{ type }}</option>
+        <select formControlName="typeRoom" id="typeRoom" class="form-select" required>
+          @for (type of apartmentTypes; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
         </select>
       </div>
 
@@ -25,32 +27,68 @@
         <label for="images">Фото:</label><br />
         <label for="images" class="custom-file-label">Оберіть фото</label>
         <input (change)="onFilesSelected($event)"
-               type="file"
-               id="images"
-               multiple
-               class="custom-file-input"
-               required />
-        <span class="file-name">{{ selectedFileName || 'Файл не обрано' }}</span>
-      </div>
+          type="file"
+          id="images"
+          multiple
+          class="custom-file-input"
+          required />
+          <span class="file-name">{{ selectedFileName || 'Файл не обрано' }}</span>
+        </div>
 
 
-      <div class="form-group pt-3">
-        <label for="addressId">Адреса:</label>
-        <select [(ngModel)]="apartament.addressId" formControlName="addressId" id="addressId" class="form-select" required>
-          <option *ngFor="let address of addresses" [value]="address.id">
-            {{ address.street }}, {{ address.city }}, буд. {{ address.numberHouse }}
-          </option>
-        </select>
-      </div>
+        <div class="form-group pt-3">
+          <label for="addressId">Адреса:</label>
+          <select formControlName="addressId" id="addressId" class="form-select" required>
+            @for (address of addresses; track address.id) {
+              <option [value]="address.id">
+                {{ address.street }}, {{ address.city }}, буд. {{ address.numberHouse }}
+              </option>
+            }
+          </select>
+        </div>
 
-      <div class="form-group pt-3">
-        <label for="description">Опис:</label>
-        <textarea [(ngModel)]="apartament.description" formControlName="description" id="description" rows="3" class="form-control" required></textarea>
-      </div>
+        <div class="form-group pt-3">
+          <label for="description">Опис:</label>
+          <textarea formControlName="description" id="description" rows="3" class="form-control" required></textarea>
+          <button type="button" (click)="improveDescription()" [disabled]="aiLoading" class="btn btn-secondary mt-2">
+            @if (aiLoading) {
+              Аналізуємо...
+            } @else {
+              Покращити опис за допомогою AI
+            }
+          </button>
+        </div>
 
-      <button (click)="onSubmit()" type="submit" class="btn btn-primary btn-block mt-4 w-100">
-        Додати кімнату
-      </button>
-    </form>
+        @if (aiResult) {
+          <div class="card mt-3">
+            <div class="card-body">
+              <h5 class="card-title">AI аналіз</h5>
+              <p class="mb-2"><strong>Оцінка якості:</strong> {{ aiResult.qualityScore }}</p>
+
+              @if (aiResult.amenities.length > 0) {
+                <p class="mb-1"><strong>Зручності:</strong></p>
+                <ul>
+                  @for (amenity of aiResult.amenities; track amenity) {
+                    <li>{{ amenity }}</li>
+                  }
+                </ul>
+              }
+
+              @if (aiResult.recommendations.length > 0) {
+                <p class="mb-1"><strong>Рекомендації:</strong></p>
+                <ul>
+                  @for (recommendation of aiResult.recommendations; track recommendation) {
+                    <li>{{ recommendation }}</li>
+                  }
+                </ul>
+              }
+            </div>
+          </div>
+        }
+
+        <button (click)="onSubmit()" type="submit" class="btn btn-primary btn-block mt-4 w-100">
+          Додати кімнату
+        </button>
+      </form>
+    </div>
   </div>
-</div>

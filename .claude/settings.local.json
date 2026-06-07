@@ -1,7 +1,35 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dotnet ef:*)"
+      "Bash(dotnet ef:*)",
+      "Bash(dotnet build *)",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const p=require\\('@angular/common/package.json'\\); console.log\\(JSON.stringify\\(p.exports['./http'], null, 2\\)\\)\")",
+      "Bash(npx ng *)",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(node node_modules/@angular/cli/bin/ng.js build --configuration development)",
+      "Bash(node -e \"const p=require\\('ngx-bootstrap/package.json'\\); console.log\\('exports:', JSON.stringify\\(p.exports && p.exports['./carousel'], null, 2\\)\\)\")",
+      "Bash(node -e \"const p=require\\('ngx-bootstrap/carousel/package.json'\\); console.log\\(JSON.stringify\\({main:p.main,module:p.module,typings:p.typings,types:p.types,exports:p.exports}, null, 2\\)\\)\")",
+      "Bash(node -e \"console.log\\('ngx-bootstrap version:', require\\('ngx-bootstrap/package.json'\\).version\\)\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); console.log\\('ngx-bootstrap-carousel.d.ts:', fs.existsSync\\('node_modules/ngx-bootstrap/carousel/ngx-bootstrap-carousel.d.ts'\\)\\); console.log\\('index.d.ts:', fs.existsSync\\('node_modules/ngx-bootstrap/carousel/index.d.ts'\\)\\)\")",
+      "Bash(npm view *)",
+      "Bash(node -e \"let d='';process.stdin.on\\('data',c=>d+=c\\).on\\('end',\\(\\)=>{const v=JSON.parse\\(d\\);console.log\\(v.slice\\(-12\\).join\\('\\\\n'\\)\\)}\\)\")",
+      "Bash(node -e \"console.log\\('installed @angular/core:', require\\('@angular/core/package.json'\\).version\\)\")",
+      "Bash(npm install *)",
+      "Bash(node -e \"console.log\\('version:', require\\('ngx-bootstrap/package.json'\\).version\\); console.log\\('./carousel exports:', JSON.stringify\\(require\\('ngx-bootstrap/package.json'\\).exports['./carousel'], null, 2\\)\\)\")",
+      "Bash(node -e \"const p=require\\('ngx-bootstrap/package.json'\\).exports['./carousel']; const t=p.types||p['.']?.types; const fs=require\\('fs'\\); const f='node_modules/ngx-bootstrap/'+t.replace\\('./',''\\); console.log\\(f, '->', fs.existsSync\\(f\\)\\)\")",
+      "Bash(node node_modules/@angular/cli/bin/ng.js generate @angular/core:control-flow --defaults --interactive=false)",
+      "Bash(node node_modules/@angular/cli/bin/ng.js build)",
+      "PowerShell(npx ng build --configuration production 2>&1 | Select-Object -Last 30)",
+      "Bash(grep -rn \"zone\" src/polyfills.ts angular.json package.json)",
+      "Bash(cat src/polyfills.ts)",
+      "PowerShell(dotnet build *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\march\\\\source\\\\repos\\\\bacalavrwork\\\\WhereAndHow\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(npm run *)",
+      "Bash(touch WhereAndHow.Server/wwwroot/uploads/.gitkeep)",
+      "Bash(git add *)",
+      "Bash(git check-ignore *)"
     ]
   }
 }

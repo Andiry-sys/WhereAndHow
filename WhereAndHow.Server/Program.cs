@@ -1,9 +1,12 @@
+using Application.Interfaces;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Seed;
 using Infrastructure.Service;
+using Infrastructure.Service.Services;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.FileProviders;
+using System.Net.Http.Headers;
 using System.Threading.RateLimiting;
 using WhereAndHow.Server;
 
@@ -17,6 +20,17 @@ builder.Services.AddInfrastructurePersistenceService(builder.Configuration);
 builder.Services.AddInfrastructureService();
 builder.Services.AddInfrastructureWeb(builder.Configuration);
 
+// ICC-USA AI: typed HttpClient. API key comes only from the ICCUSA_API_KEY env var.
+builder.Services.AddHttpClient<IAIService, AIService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["IccUsa:BaseUrl"]!);
+    client.Timeout = TimeSpan.FromSeconds(30);
+
+    var apiKey = Environment.GetEnvironmentVariable("ICCUSA_API_KEY");
+    if (!string.IsNullOrWhiteSpace(apiKey))
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+});
+
 // Rate limiting: partner-request — max 3 calls per IP per hour
 builder.Services.AddRateLimiter(options =>
 {
@@ -24,6 +38,14 @@ builder.Services.AddRateLimiter(options =>
     {
         opt.PermitLimit = 3;
         opt.Window = TimeSpan.FromHours(1);
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        opt.QueueLimit = 0;
+    });
+    // ai-analyze — max 10 AI improvement calls per IP per minute
+    options.AddFixedWindowLimiter("ai-analyze", opt =>
+    {
+        opt.PermitLimit = 10;
+        opt.Window = TimeSpan.FromMinutes(1);
         opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
         opt.QueueLimit = 0;
     });

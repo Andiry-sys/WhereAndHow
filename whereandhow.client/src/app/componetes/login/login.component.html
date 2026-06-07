@@ -14,9 +14,11 @@
                     <span class="fa fa-envelope-o p-2" aria-hidden="true"></span>
                     <input formControlName="email" type="email" placeholder="Електронна скринька" required />
                   </div>
-                  <div class="form-text text-danger" *ngIf="email.errors?.['required'] && email.touched">
-                    Введіть почту
-                  </div>
+                  @if (email.errors?.['required'] && email.valid) {
+                    <div class="form-text text-danger">
+                      Введіть електронну пошту
+                    </div>
+                  }
                 </div>
               </div>
 
@@ -26,9 +28,11 @@
                   <input [type]="type" formControlName="password" type="password" placeholder="Пароль" required />
                   <span (click)="hideShowPass()" class="fa {{eyeIcon}}"></span>
                 </div>
-                <div class="form-text text-danger" *ngIf="password.errors?.['required'] && password.touched">
-                  Введіть пароль
-                </div>
+                @if (password.errors?.['required'] && password.valid) {
+                  <div class="form-text text-danger">
+                    Введіть пароль
+                  </div>
+                }
 
               </div>
 
@@ -36,7 +40,7 @@
                 (click)="onLogin()"
                 type="submit"
                 class="btn btn-primary btn-block mt-4 w-100"
-              >
+                >
                 Вхід
               </button>
 

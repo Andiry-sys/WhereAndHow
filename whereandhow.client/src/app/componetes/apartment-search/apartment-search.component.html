@@ -12,50 +12,52 @@
                 <label for="name">Назва помешкання:</label>
                 <div class="input-field">
                   <input id="name"
-                         name="name"
-                         [(ngModel)]="searchApartament.name"
-                         type="text"
-                         required />
+                    name="name"
+                    [(ngModel)]="searchApartament.name"
+                    type="text"
+                    required />
+                  </div>
                 </div>
-              </div>
 
-              <div class="form-group pt-3">
-                <label for="typeRoom">Тип помешкання:</label>
-                <select id="typeRoom"
-                        name="typeRoom"
-                        [(ngModel)]="searchApartament.typeRoom"
-                        class="form-select bg-dark">
-                  <option *ngFor="let type of apartmentTypes" [value]="type">
-                    {{ type }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="form-group pt-3">
-                <label for="priceRange">Ціновий діапазон:</label>
-                <ngx-slider [(value)]="searchApartament.minValue"
-                            [(highValue)]="searchApartament.maxValue"
-                            [options]="sliderOptions"></ngx-slider>
-              </div>
-
-              <div class="form-group pt-3">
-                <label for="city">Місто:</label>
-                <div class="input-field">
-                  <input id="city"
-                         name="city"
-                         [(ngModel)]="searchApartament.city"
-                         type="text"
-                         required />
+                <div class="form-group pt-3">
+                  <label for="typeRoom">Тип помешкання:</label>
+                  <select id="typeRoom"
+                    name="typeRoom"
+                    [(ngModel)]="searchApartament.typeRoom"
+                    class="form-select bg-dark">
+                    @for (type of apartmentTypes; track type) {
+                      <option [value]="type">
+                        {{ type }}
+                      </option>
+                    }
+                  </select>
                 </div>
-              </div>
 
-              <button type="submit" class="btn btn-primary btn-block mt-4 w-100">
-                Пошук
-              </button>
-            </form>
+                <div class="form-group pt-3">
+                  <label for="priceRange">Ціновий діапазон:</label>
+                  <ngx-slider [(value)]="searchApartament.minValue"
+                    [(highValue)]="searchApartament.maxValue"
+                  [options]="sliderOptions"></ngx-slider>
+                </div>
+
+                <div class="form-group pt-3">
+                  <label for="city">Місто:</label>
+                  <div class="input-field">
+                    <input id="city"
+                      name="city"
+                      [(ngModel)]="searchApartament.city"
+                      type="text"
+                      required />
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary btn-block mt-4 w-100">
+                    Пошук
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
