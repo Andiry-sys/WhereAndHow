@@ -17,6 +17,7 @@ import { UpdateUserprofileService } from '../../services/update-userprofile.serv
 })
 export class CurrentApartamentComponent implements OnInit {
   public photos: { imagePath: string }[] = [];
+  public selectedPhotoIndex: number = 0;
 
   apartmentForm = new FormGroup({
     name:        new FormControl(''),
@@ -79,6 +80,10 @@ export class CurrentApartamentComponent implements OnInit {
         console.error('[CurrentApartament] Failed to load user:', err);
       }
     });
+  }
+
+  public selectPhoto(index: number): void {
+    this.selectedPhotoIndex = index;
   }
 
   orderApartament(): void {

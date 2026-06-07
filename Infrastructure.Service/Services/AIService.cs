@@ -1,6 +1,8 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Application.Interfaces;
 using Core.Domain.DTOs;
 using Infrastructure.Service.Exceptions;
@@ -19,17 +21,18 @@ public class AIService(
     private readonly IConfiguration _configuration = configuration;
     private readonly ILogger<AIService> _logger = logger;
 
-    private const string SystemPrompt =
-        "You are a professional real-estate copywriter. Improve the apartment description you are given. " +
-        "Respond with STRICT JSON ONLY (no markdown, no code fences, no commentary) matching exactly this schema: " +
-        "{ \"improvedDescription\": string, \"amenities\": string[], \"qualityScore\": number (0-100), \"recommendations\": string[] }.";
-
     private static readonly JsonSerializerOptions ParseOptions = new()
     {
         PropertyNameCaseInsensitive = true
     };
 
-    public async Task<AIAnalyzeResponseDTO> AnalyzeDescriptionAsync(string description)
+    // Matches control characters except tab (0x09) and newline (0x0A / 0x0D).
+    private static readonly Regex ControlChars = new(@"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]", RegexOptions.Compiled);
+
+    // Collapses runs of 3+ newlines to a single blank line.
+    private static readonly Regex ExcessiveNewlines = new(@"\n{3,}", RegexOptions.Compiled);
+
+    public async Task<AIAnalyzeResponseDTO> AnalyzeDescriptionAsync(AIAnalyzeRequestDTO request)
     {
         var model = _configuration["IccUsa:Model"]
             ?? throw new AIServiceException("IccUsa:Model is not configured.");
@@ -38,6 +41,10 @@ public class AIService(
             ?? Environment.GetEnvironmentVariable("ICCUSA_API_KEY")
             ?? throw new AIServiceException("ICC-USA API token is not configured.");
 
+        var language = NormalizeLanguage(request.Language);
+        var systemPrompt = BuildSystemPrompt(language);
+        var userMessage = BuildUserMessage(request);
+
         var requestBody = new
         {
             model,
@@ -45,22 +52,21 @@ public class AIService(
             response_format = new { type = "json_object" },
             messages = new[]
             {
-                new { role = "system", content = SystemPrompt },
-                new { role = "user", content = description }
+                new { role = "system", content = systemPrompt },
+                new { role = "user",   content = userMessage  }
             }
-
         };
 
-        using var request = new HttpRequestMessage(HttpMethod.Post, "chat/completions")
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "chat/completions")
         {
             Content = JsonContent.Create(requestBody)
         };
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         HttpResponseMessage response;
         try
         {
-            response = await _httpClient.SendAsync(request);
+            response = await _httpClient.SendAsync(httpRequest);
         }
         catch (HttpRequestException ex)
         {
@@ -115,13 +121,74 @@ public class AIService(
         }
     }
 
+    // ── Prompt builders ───────────────────────────────────────────────────────
+
+    private static string NormalizeLanguage(string? raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw))
+            return "English";
+
+        return raw.Trim().ToLowerInvariant() switch
+        {
+            "ukrainian" or "uk" or "ukrainska" or "українська" => "Ukrainian",
+            "english"   or "en"                                => "English",
+            _                                                  => "English",
+        };
+    }
+
+    private static string BuildSystemPrompt(string language) =>
+        $$"""
+        You are a professional rental listing writer specialising in short-term apartment rentals.
+        Your task is to rewrite the apartment description provided by the user.
+
+        RULES:
+        - Write exclusively in {{language}}. Every field of the JSON response must be in {{language}}.
+        - Use only the facts provided. Never invent features, amenities, or locations.
+        - Write in a warm, professional tone suitable for a rental platform.
+        - Keep the improved description between 80 and 200 words.
+        - Identify amenities explicitly mentioned in the description.
+        - Provide 2 to 4 concrete, actionable recommendations to improve the listing.
+        - Score description quality from 0 to 100 based on completeness, clarity, and appeal.
+
+        Respond with STRICT JSON ONLY — no markdown, no code fences, no commentary — matching exactly:
+        { "improvedDescription": string, "amenities": string[], "qualityScore": number, "recommendations": string[] }
+        """;
+
+    private static string BuildUserMessage(AIAnalyzeRequestDTO req)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("APARTMENT DATA:");
+        sb.AppendLine($"Name: {Sanitize(req.Name)}");
+        sb.AppendLine($"Type: {Sanitize(req.TypeRoom)}");
+        sb.AppendLine($"Price per night: {(req.Price.HasValue ? $"{req.Price.Value} UAH" : "not provided")}");
+        sb.AppendLine($"City: {Sanitize(req.City)}");
+        sb.AppendLine($"Street: {Sanitize(req.Street)}");
+        sb.AppendLine();
+        sb.AppendLine("ORIGINAL DESCRIPTION:");
+        sb.Append(Sanitize(req.Description));
+        return sb.ToString();
+    }
+
+    // Removes control characters and collapses excessive whitespace.
+    // Input is placed in the user message only — never in the system prompt.
+    private static string Sanitize(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return "not provided";
+
+        var s = ControlChars.Replace(value.Trim(), string.Empty);
+        s = ExcessiveNewlines.Replace(s, "\n\n");
+        return s;
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
     private static string StripJsonFences(string content)
     {
         var trimmed = content.Trim();
         if (!trimmed.StartsWith("```"))
             return trimmed;
 
-        // Remove a leading ```json or ``` fence and the trailing ``` fence.
         var firstNewline = trimmed.IndexOf('\n');
         if (firstNewline >= 0)
             trimmed = trimmed[(firstNewline + 1)..];
@@ -144,7 +211,7 @@ public class AIService(
 
     private sealed class ChatMessage
     {
-        public string? Role { get; set; }
+        public string? Role    { get; set; }
         public string? Content { get; set; }
     }
 }

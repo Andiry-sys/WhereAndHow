@@ -4,5 +4,5 @@ namespace Application.Interfaces;
 
 public interface IAIService
 {
-    Task<AIAnalyzeResponseDTO> AnalyzeDescriptionAsync(string description);
+    Task<AIAnalyzeResponseDTO> AnalyzeDescriptionAsync(AIAnalyzeRequestDTO request);
 }

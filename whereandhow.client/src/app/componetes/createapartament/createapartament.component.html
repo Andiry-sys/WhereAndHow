@@ -1,44 +1,65 @@
 <div class="outer">
-  <div class="panel border bg-dark p-4">
-    <div class="panel-heading">
-      <h3 class="pt-3 font-weight-bold">Введіть данні</h3>
+  <div class="form-card">
+
+    <div class="form-card__header">
+      <h2 class="form-card__title">Додати помешкання</h2>
     </div>
+
     <form [formGroup]="apartmentForm" enctype="multipart/form-data">
-      <div class="form-group pt-3">
-        <label for="name">Назва помешкання:</label>
-        <input formControlName="name" type="text" id="name" required />
-      </div>
 
-      <div class="form-group pt-3">
-        <label for="price">Ціна за добу (₴):</label>
-        <input formControlName="price" type="number" id="price" min="10" max="10000" required />
-      </div>
+      <!-- ── Section 1: Basic Information ─────────────────────────────── -->
+      <section class="form-section">
+        <h4 class="form-section__title">Основна інформація</h4>
 
-      <div class="form-group pt-3">
-        <label for="typeRoom">Тип помешкання:</label>
-        <select formControlName="typeRoom" id="typeRoom" class="form-select" required>
-          @for (type of apartmentTypes; track type) {
-            <option [value]="type">{{ type }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="form-group pt-3">
-        <label for="images">Фото:</label><br />
-        <label for="images" class="custom-file-label">Оберіть фото</label>
-        <input (change)="onFilesSelected($event)"
-          type="file"
-          id="images"
-          multiple
-          class="custom-file-input"
-          required />
-          <span class="file-name">{{ selectedFileName || 'Файл не обрано' }}</span>
+        <div class="form-field">
+          <label class="form-label" for="name">Назва помешкання</label>
+          <input formControlName="name"
+                 type="text"
+                 id="name"
+                 class="form-input"
+                 placeholder="Наприклад: Затишна квартира у центрі"
+                 required />
         </div>
 
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label" for="price">Ціна за добу (₴)</label>
+            <input formControlName="price"
+                   type="number"
+                   id="price"
+                   class="form-input"
+                   min="10"
+                   max="10000"
+                   placeholder="0"
+                   required />
+          </div>
 
-        <div class="form-group pt-3">
-          <label for="addressId">Адреса:</label>
-          <select formControlName="addressId" id="addressId" class="form-select" required>
+          <div class="form-field">
+            <label class="form-label" for="typeRoom">Тип помешкання</label>
+            <select formControlName="typeRoom"
+                    id="typeRoom"
+                    class="form-input form-select-input"
+                    required>
+              <option value="" disabled selected>Оберіть тип</option>
+              @for (type of apartmentTypes; track type) {
+                <option [value]="type">{{ type }}</option>
+              }
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Section 2: Location ───────────────────────────────────────── -->
+      <section class="form-section">
+        <h4 class="form-section__title">Розташування</h4>
+
+        <div class="form-field">
+          <label class="form-label" for="addressId">Адреса</label>
+          <select formControlName="addressId"
+                  id="addressId"
+                  class="form-input form-select-input"
+                  required>
+            <option value="" disabled selected>Оберіть адресу</option>
             @for (address of addresses; track address.id) {
               <option [value]="address.id">
                 {{ address.street }}, {{ address.city }}, буд. {{ address.numberHouse }}
@@ -46,49 +67,97 @@
             }
           </select>
         </div>
+      </section>
 
-        <div class="form-group pt-3">
-          <label for="description">Опис:</label>
-          <textarea formControlName="description" id="description" rows="3" class="form-control" required></textarea>
-          <button type="button" (click)="improveDescription()" [disabled]="aiLoading" class="btn btn-secondary mt-2">
-            @if (aiLoading) {
-              Аналізуємо...
-            } @else {
-              Покращити опис за допомогою AI
-            }
-          </button>
+      <!-- ── Section 3: Media ──────────────────────────────────────────── -->
+      <section class="form-section">
+        <h4 class="form-section__title">Фотографії</h4>
+
+        <div class="form-field">
+          <label class="form-label">Фото помешкання</label>
+          <div class="file-upload-area">
+            <label for="images" class="file-upload-btn">
+              <span class="file-upload-icon">📁</span>
+              Оберіть фото
+            </label>
+            <input (change)="onFilesSelected($event)"
+                   type="file"
+                   id="images"
+                   multiple
+                   class="file-upload-hidden"
+                   required />
+            <span class="file-upload-name">{{ selectedFileName || 'Файл не обрано' }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Section 4: Description ────────────────────────────────────── -->
+      <section class="form-section form-section--last">
+        <h4 class="form-section__title">Опис</h4>
+
+        <div class="form-field">
+          <label class="form-label" for="description">Опис помешкання</label>
+          <textarea formControlName="description"
+                    id="description"
+                    rows="5"
+                    class="form-input form-textarea"
+                    placeholder="Розкажіть про помешкання: зручності, особливості, правила проживання…"
+                    required></textarea>
         </div>
 
-        @if (aiResult) {
-          <div class="card mt-3">
-            <div class="card-body">
-              <h5 class="card-title">AI аналіз</h5>
-              <p class="mb-2"><strong>Оцінка якості:</strong> {{ aiResult.qualityScore }}</p>
+        <button type="button"
+                (click)="improveDescription()"
+                [disabled]="aiLoading"
+                class="btn btn-ai">
+          @if (aiLoading) {
+            <span class="btn-spinner"></span>
+            Аналізуємо…
+          } @else {
+            ✨ Покращити опис за допомогою AI
+          }
+        </button>
 
-              @if (aiResult.amenities.length > 0) {
-                <p class="mb-1"><strong>Зручності:</strong></p>
-                <ul>
+        @if (aiResult) {
+          <div class="ai-result-card">
+            <h5 class="ai-result-card__title">AI аналіз</h5>
+
+            <div class="ai-result-row">
+              <span class="ai-result-label">Оцінка якості:</span>
+              <span class="ai-result-value ai-score">{{ aiResult.qualityScore }}</span>
+            </div>
+
+            @if (aiResult.amenities.length > 0) {
+              <div class="ai-result-row ai-result-row--list">
+                <span class="ai-result-label">Зручності:</span>
+                <ul class="ai-list">
                   @for (amenity of aiResult.amenities; track amenity) {
                     <li>{{ amenity }}</li>
                   }
                 </ul>
-              }
+              </div>
+            }
 
-              @if (aiResult.recommendations.length > 0) {
-                <p class="mb-1"><strong>Рекомендації:</strong></p>
-                <ul>
+            @if (aiResult.recommendations.length > 0) {
+              <div class="ai-result-row ai-result-row--list">
+                <span class="ai-result-label">Рекомендації:</span>
+                <ul class="ai-list">
                   @for (recommendation of aiResult.recommendations; track recommendation) {
                     <li>{{ recommendation }}</li>
                   }
                 </ul>
-              }
-            </div>
+              </div>
+            }
           </div>
         }
+      </section>
 
-        <button (click)="onSubmit()" type="submit" class="btn btn-primary btn-block mt-4 w-100">
-          Додати кімнату
+      <!-- ── Submit ────────────────────────────────────────────────────── -->
+      <div class="form-actions">
+        <button (click)="onSubmit()" type="submit" class="btn btn-submit">
+          Додати помешкання
         </button>
-      </form>
-    </div>
+      </div>
+
+    </form>
   </div>
+</div>

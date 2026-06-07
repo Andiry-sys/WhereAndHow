@@ -24,7 +24,7 @@ public class AIController(IAIService aiService, ILogger<AIController> logger) : 
 
         try
         {
-            var result = await _aiService.AnalyzeDescriptionAsync(dto.Description);
+            var result = await _aiService.AnalyzeDescriptionAsync(dto);
             return Ok(result);
         }
         catch (AIServiceException ex)

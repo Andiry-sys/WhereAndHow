@@ -1,84 +1,243 @@
-.apartment-list {
-    display: flex;
-    flex-wrap: wrap;
-
-  }
-
-  .apartment-item {
-    width: 280px;
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background: rgba(33, 37, 41, 0.93);
-  }
-
-  .apartment-name {
-    color: white;
-    font-size: 25px;
-    font-weight: bold;
-  }
-
-  .apartment-price {
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  .apartment-type {
-    color: white;
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-
-  .apartment-address {
-    color: white;
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-
-  .image-item {
-    margin-bottom: 10px;
-  }
-
-  .image-item img {
-    width: 100%;
-  }
-  .btn-primary {
-    font-size: 15px;
-    background-color: #333;
-    border-color: #333;
-  }
-  .btn-primary:hover {
-    background-color: #222;
-    border-color: #222;
-  }
+/* ── Page container ─────────────────────────────────────────────────────── */
 .outer {
-  height: 100vh;
+  min-height: 100vh;
+  padding: 40px 24px 80px;
   background-image: url('public/backgroundMAIN.jpg');
   background-repeat: repeat;
 }
 
-.no-results-container {
-  background: rgba(33, 37, 41, 0.93);
-  color: white;
-  border-radius: 12px;
-  padding: 30px;
-  max-width: 500px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* ── Grid ───────────────────────────────────────────────────────────────── */
+.apt-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
+@media (max-width: 1280px) {
+  .apt-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .apt-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 580px) {
+  .apt-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .outer { padding: 24px 16px 64px; }
+}
+
+/* ── Card ───────────────────────────────────────────────────────────────── */
+.apt-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(22, 25, 29, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.apt-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.65);
+}
+
+/* ── Photo ──────────────────────────────────────────────────────────────── */
+.apt-photo-link {
+  display: block;
+  text-decoration: none;
+}
+
+.apt-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #1a1d21;
+}
+
+.apt-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.apt-card:hover .apt-img {
+  transform: scale(1.04);
+}
+
+.apt-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e2227 0%, #2a2f37 100%);
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+}
+
+/* ── Price badge (overlay on photo) ────────────────────────────────────── */
+.apt-price-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(10, 12, 16, 0.85);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 8px;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+.apt-price-unit {
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.75;
+  margin-left: 1px;
+}
+
+/* ── Card body ──────────────────────────────────────────────────────────── */
+.apt-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 16px 18px 18px;
+  gap: 8px;
+}
+
+/* ── Title row ──────────────────────────────────────────────────────────── */
+.apt-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.apt-name {
+  color: #f0f1f3;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.35;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.apt-type-badge {
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  line-height: 1.5;
+  margin-top: 1px;
+}
+
+/* ── Location ───────────────────────────────────────────────────────────── */
+.apt-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.apt-pin {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  opacity: 0.55;
+}
+
+.apt-city {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.apt-street {
+  color: rgba(255, 255, 255, 0.38);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Description ────────────────────────────────────────────────────────── */
+.apt-description {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── CTA button ─────────────────────────────────────────────────────────── */
+.apt-btn {
+  display: block;
+  margin-top: auto;
+  padding: 9px 16px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 8px;
+  color: #e0e2e6;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.apt-btn:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ── No results ─────────────────────────────────────────────────────────── */
+.no-results-container {
+  text-align: center;
+  background: rgba(33, 37, 41, 0.93);
+  color: white;
+  border-radius: 14px;
+  padding: 40px 32px;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  margin: 80px auto 0;
+}
 
 .no-results-heading {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .no-results-text {
-  font-size: 16px;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 0;
 }
-

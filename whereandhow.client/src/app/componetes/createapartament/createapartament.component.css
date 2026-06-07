@@ -1,82 +1,338 @@
+/* ── Page shell ──────────────────────────────────────────────────────────── */
 .outer {
-  width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background-image: url('public/backgroundMAIN.jpg');
   background-repeat: repeat;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: flex-start;
+  padding: 48px 16px 80px;
+  box-sizing: border-box;
 }
 
-.panel {
-  width: 400px;
-  background: rgba(33, 37, 41, 0.93);
-  padding: 30px;
-  border-radius: 12px;
-}
-
-.panel-heading {
-  text-align: center;
-  margin-bottom: 10px;
-  color: white;
-}
-
-.form-group {
-  margin-bottom: 15px;
-  color: white;
-}
-
-.form-control,
-input[type="text"],
-input[type="number"],
-textarea,
-select {
+/* ── Card container ──────────────────────────────────────────────────────── */
+.form-card {
   width: 100%;
-  padding: 8px;
-  border-radius: 5px;
-  background: rgba(33, 37, 41, 0.93);
-  color: white;
-  border: 1px solid #ccc;
+  max-width: 900px;
+  background: rgba(22, 25, 29, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 40px 48px 48px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
+  box-sizing: border-box;
 }
 
-.form-select {
-  color: white;
-  background: rgba(33, 37, 41, 0.93);
+.form-card__header {
+  margin-bottom: 36px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.btn-primary {
-  font-size: 15px;
-  background-color: #333;
-  border-color: #333;
-  color: white;
+.form-card__title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.02em;
 }
 
-  .btn-primary:hover {
-    background-color: #222;
-    border-color: #222;
-  }
+/* ── Sections ─────────────────────────────────────────────────────────────── */
+.form-section {
+  margin-bottom: 36px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
 
+.form-section--last {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
 
-.custom-file-input {
+.form-section__title {
+  margin: 0 0 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Two-column row (price + typeRoom) ───────────────────────────────────── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ── Individual field ────────────────────────────────────────────────────── */
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-field:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ── Inputs (text, number, select, textarea) ─────────────────────────────── */
+.form-input {
+  display: block;
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.form-input:focus {
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.form-select-input {
+  cursor: pointer;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='rgba(255,255,255,0.4)' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+.form-select-input option {
+  background: #1e2228;
+  color: #ffffff;
+}
+
+.form-textarea {
+  height: auto;
+  padding: 12px 14px;
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+/* ── File upload ─────────────────────────────────────────────────────────── */
+.file-upload-area {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.file-upload-hidden {
   display: none;
 }
 
-.custom-file-label {
-  display: inline-block;
-  padding: 8px 12px;
-  background-color: #444;
-  color: white;
-  border-radius: 5px;
+.file-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.875rem;
   cursor: pointer;
-  border: 1px solid #ccc;
-  transition: background-color 0.3s;
+  transition: background 0.2s, border-color 0.2s;
+  user-select: none;
+  white-space: nowrap;
 }
 
-  .custom-file-label:hover {
-    background-color: #333;
+.file-upload-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.file-upload-icon {
+  font-size: 1rem;
+}
+
+.file-upload-name {
+  font-size: 0.825rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-style: italic;
+}
+
+/* ── AI button ───────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-ai {
+  margin-top: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.btn-ai:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Loading spinner inside AI button */
+.btn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── AI result card ──────────────────────────────────────────────────────── */
+.ai-result-card {
+  margin-top: 20px;
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.ai-result-card__title {
+  margin: 0 0 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ai-result-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.ai-result-row:last-child {
+  margin-bottom: 0;
+}
+
+.ai-result-row--list {
+  align-items: flex-start;
+}
+
+.ai-result-label {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ai-result-value {
+  font-size: 0.875rem;
+  color: #ffffff;
+}
+
+.ai-score {
+  font-weight: 700;
+  color: #82c8a0;
+}
+
+.ai-list {
+  margin: 0;
+  padding-left: 18px;
+  list-style: disc;
+}
+
+.ai-list li {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.7;
+}
+
+/* ── Submit button ───────────────────────────────────────────────────────── */
+.form-actions {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-submit {
+  width: 100%;
+  height: 50px;
+  background: #3a7bd5;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  letter-spacing: 0.02em;
+}
+
+.btn-submit:hover {
+  background: #2f65b8;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .form-card {
+    padding: 28px 20px 36px;
   }
 
-.file-name {
-  margin-left: 10px;
-  color: #ccc;
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-card__title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .outer {
+    padding: 24px 8px 60px;
+  }
+
+  .form-card {
+    border-radius: 10px;
+    padding: 20px 16px 28px;
+  }
+
+  .file-upload-area {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

@@ -1,70 +1,96 @@
-<div class="outer d-flex justify-content-center align-items-start pt-5">
-  <div class="apartment-item">
+<div class="outer">
+  <div class="property-layout">
 
-    @if (photos.length > 0) {
-      <div class="apartment-images image-item mb-3">
-        <carousel>
-          @for (image of photos; track image) {
-            <slide>
-              <img [src]="image.imagePath" alt="Apartment Image" />
-            </slide>
+    <!-- ── Gallery ─────────────────────────────────────────────────────── -->
+    <section class="gallery-col">
+      <div class="gallery-main">
+        @if (photos.length > 0) {
+          <img [src]="photos[selectedPhotoIndex].imagePath"
+               alt="Apartment photo"
+               class="gallery-main-img" />
+        } @else {
+          <div class="gallery-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" class="placeholder-icon" stroke="currentColor">
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="1.5"/>
+              <circle cx="8.5" cy="8.5" r="1.5" stroke-width="1.5"/>
+              <path d="M21 15l-5-5L5 21" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+            <span>Фото відсутні</span>
+          </div>
+        }
+      </div>
+
+      @if (photos.length > 1) {
+        <div class="gallery-thumbs">
+          @for (photo of photos; track photo.imagePath; let i = $index) {
+            <button class="thumb-btn"
+                    [class.thumb-active]="i === selectedPhotoIndex"
+                    (click)="selectPhoto(i)">
+              <img [src]="photo.imagePath" alt="" class="thumb-img" />
+            </button>
           }
-        </carousel>
-      </div>
-    }
+        </div>
+      }
+    </section>
 
-    <form [formGroup]="apartmentForm">
+    <!-- ── Details ─────────────────────────────────────────────────────── -->
+    <div class="details-col">
 
-      <div class="form-group pt-3">
-        <label for="name">Назва:</label>
-        <input formControlName="name" type="text" id="name" readonly class="form-control" />
-      </div>
+      <!-- Hero: name, type, location, price -->
+      <div class="prop-card">
+        <div class="prop-title-row">
+          <h1 class="prop-name">{{ apartmentForm.get('name')?.value }}</h1>
+          <span class="prop-type-badge">{{ apartmentForm.get('typeRoom')?.value }}</span>
+        </div>
 
-      <div class="form-group pt-3">
-        <label for="price">Ціна за добу (₴):</label>
-        <input formControlName="price" type="number" id="price" readonly class="form-control" />
-      </div>
+        @if (apartmentForm.get('city')?.value) {
+          <div class="prop-location">
+            <svg class="prop-pin" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 1a4.5 4.5 0 0 0-4.5 4.5C3.5 9 8 15 8 15s4.5-6 4.5-8.5A4.5 4.5 0 0 0 8 1zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+            </svg>
+            <span>{{ apartmentForm.get('city')?.value }}</span>
+            @if (apartmentForm.get('street')?.value) {
+              <span class="prop-addr-muted">,&nbsp;{{ apartmentForm.get('street')?.value }}</span>
+            }
+            @if (apartmentForm.get('numberHouse')?.value) {
+              <span class="prop-addr-muted">&nbsp;{{ apartmentForm.get('numberHouse')?.value }}</span>
+            }
+          </div>
+        }
 
-      <div class="form-group pt-3">
-        <label for="typeRoom">Тип помешкання:</label>
-        <input formControlName="typeRoom" type="text" id="typeRoom" readonly class="form-control" />
-      </div>
-
-      <div class="form-group pt-3">
-        <label for="description">Опис:</label>
-        <textarea formControlName="description" id="description" rows="4" readonly class="form-control"></textarea>
-      </div>
-
-      <div class="form-group pt-3">
-        <label for="city">Місто:</label>
-        <input formControlName="city" type="text" id="city" readonly class="form-control" />
-      </div>
-
-      <div class="form-group pt-3">
-        <label for="street">Вулиця:</label>
-        <input formControlName="street" type="text" id="street" readonly class="form-control" />
-      </div>
-
-      <div class="form-group pt-3">
-        <label for="numberHouse">Будинок:</label>
-        <input formControlName="numberHouse" type="text" id="numberHouse" readonly class="form-control" />
+        <div class="prop-price-row">
+          <span class="prop-price">{{ apartmentForm.get('price')?.value }}</span>
+          <span class="prop-currency">&#8372;</span>
+          <span class="prop-per-day">/день</span>
+        </div>
       </div>
 
-    </form>
+      <!-- Description -->
+      @if (apartmentForm.get('description')?.value) {
+        <div class="prop-card">
+          <h2 class="section-heading">Про помешкання</h2>
+          <p class="prop-description">{{ apartmentForm.get('description')?.value }}</p>
+        </div>
+      }
 
-    <div class="form-group pt-3">
-      <label for="checkInDate">Дата в'їзду:</label>
-      <input type="date" id="checkInDate" class="form-control" [(ngModel)]="order.CheckInDate" required />
+      <!-- Booking -->
+      <div class="prop-card">
+        <h2 class="section-heading">Забронювати</h2>
+        <div class="booking-dates">
+          <div class="date-field">
+            <label class="date-label">Дата в'їзду</label>
+            <input type="date" class="date-input" [(ngModel)]="order.CheckInDate" required />
+          </div>
+          <div class="date-field">
+            <label class="date-label">Дата виїзду</label>
+            <input type="date" class="date-input" [(ngModel)]="order.CheckOutDate" />
+          </div>
+        </div>
+        <button (click)="orderApartament()" class="booking-btn">
+          Замовити помешкання
+        </button>
+      </div>
+
     </div>
-
-    <div class="form-group pt-3">
-      <label for="checkOutDate">Дата виїзду:</label>
-      <input type="date" id="checkOutDate" class="form-control" [(ngModel)]="order.CheckOutDate" />
-    </div>
-
-    <button (click)="orderApartament()" class="btn btn-primary w-100 mt-3">
-      Замовити помешкання
-    </button>
-
   </div>
 </div>

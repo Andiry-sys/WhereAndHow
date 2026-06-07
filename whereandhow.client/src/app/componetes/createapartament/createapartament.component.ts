@@ -56,10 +56,21 @@ export class CreateapartamentComponent implements OnInit {
       return;
     }
 
+    // Resolve the selected address object to extract city and street.
+    const selectedAddress = this.addresses?.find(
+      a => a.id === (this.addressId.value as string)
+    );
+
     this.aiLoading = true;
     this.aiResult = null;
 
-    this.aiService.analyzeDescription(current).subscribe({
+    this.aiService.analyzeDescription(current, {
+      name:     (this.name.value     as string) || undefined,
+      price:    (this.price.value    as number) || undefined,
+      typeRoom: (this.typeRoom.value as string) || undefined,
+      city:     selectedAddress?.city           || undefined,
+      street:   selectedAddress?.street         || undefined,
+    }).subscribe({
       next: (res: AIAnalyzeResponse) => {
         this.aiResult = res;
         this.apartmentForm.patchValue({ description: res.improvedDescription });

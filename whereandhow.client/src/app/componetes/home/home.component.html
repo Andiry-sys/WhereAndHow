@@ -1,49 +1,67 @@
 <div class="outer">
+
   @if (apartments.length !== 0) {
 
-    <div class="apartment-list">
+    <div class="apt-grid">
       @for (apartment of apartments; track apartment.id) {
-        <div class="apartment-item">
-          <div class="apartment-details">
-            <h3 class="apartment-name">
-              {{ apartment.name }}
-            </h3>
-            <div class="apartment-images">
-              <carousel>
-                @for (image of apartment.photos; track image) {
-                  <slide>
-                    <img src="{{ image.imagePath }}"
-                         alt="Apartment Image"
-                         height="300px"
-                         width="300px" />
-                  </slide>
-                }
-              </carousel>
+        <div class="apt-card">
+
+          <a [routerLink]="['/current-apartament']"
+             [queryParams]="{ id: apartment.id }"
+             class="apt-photo-link">
+            <div class="apt-photo">
+              @if (apartment.photos && apartment.photos.length > 0) {
+                <img [src]="apartment.photos[0].imagePath"
+                     [alt]="apartment.name"
+                     class="apt-img" />
+              } @else {
+                <div class="apt-photo-placeholder">
+                  <span>Немає фото</span>
+                </div>
+              }
+              <div class="apt-price-badge">
+                {{ apartment.price }}&nbsp;₴<span class="apt-price-unit">/день</span>
+              </div>
             </div>
-            <p class="apartment-price">
-              Ціна за добу: {{ apartment.price }} ₴
-            </p>
-            <p class="apartment-type">
-              Кількість кімнат: {{ apartment.typeRoom }}
-            </p>
+          </a>
+
+          <div class="apt-body">
+            <div class="apt-title-row">
+              <h3 class="apt-name">{{ apartment.name }}</h3>
+              <span class="apt-type-badge">{{ apartment.typeRoom }}</span>
+            </div>
+
             @if (apartment.address) {
-              <p class="apartment-address">Місто: {{ apartment.address.city }}</p>
+              <div class="apt-location">
+                <svg class="apt-pin" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 1a4.5 4.5 0 0 0-4.5 4.5C3.5 9 8 15 8 15s4.5-6 4.5-8.5A4.5 4.5 0 0 0 8 1zm0 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                </svg>
+                <span class="apt-city">{{ apartment.address.city }}</span>
+                @if (apartment.address.street) {
+                  <span class="apt-street">,&nbsp;{{ apartment.address.street }}</span>
+                }
+              </div>
             }
+
+            @if (apartment.description) {
+              <p class="apt-description">{{ apartment.description }}</p>
+            }
+
             <a [routerLink]="['/current-apartament']"
                [queryParams]="{ id: apartment.id }"
-               class="btn btn-primary btn-block mt-4 w-100">Додаткова Інформація</a>
+               class="apt-btn">Переглянути деталі</a>
           </div>
+
         </div>
       }
     </div>
 
   } @else {
-    <div>
-      <div class="no-results-container text-center mt-5">
-        <h4 class="no-results-heading">Помешкання не знайдено</h4>
-        <p class="no-results-text">На жаль, за вашим запитом нічого не знайдено. Спробуйте змінити фільтри пошуку.</p>
-        <a routerLink="/search-apartment" class="btn btn-primary mt-3">Повернутися до пошуку</a>
-      </div>
+    <div class="no-results-container">
+      <h4 class="no-results-heading">Помешкання не знайдено</h4>
+      <p class="no-results-text">На жаль, за вашим запитом нічого не знайдено. Спробуйте змінити фільтри пошуку.</p>
+      <a routerLink="/search-apartment" class="btn btn-primary mt-3">Повернутися до пошуку</a>
     </div>
-    }
-  </div>
+  }
+
+</div>
