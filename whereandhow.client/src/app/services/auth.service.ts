@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { UserLoginRequestDto } from '../Model/userLoginRequestDto';
 import { UserRegisterRequestDto } from '../Model/userRegisterRequestDto';
 
@@ -17,6 +17,10 @@ interface JwtPayload {
 export class AuthService {
   private baseURL: string = '/api/authenticate/';
   private tokenKey = 'token';
+
+  private _isPartner$ = new BehaviorSubject<boolean>(this.isLosser());
+  /** Emits true whenever the stored JWT indicates the user is a partner. */
+  public isPartner$ = this._isPartner$.asObservable();
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -55,6 +59,15 @@ export class AuthService {
 
   setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
+    this._isPartner$.next(this.isLosser());
+  }
+
+  /** Re-issues a fresh JWT from the backend and stores it, updating all subscribers. */
+  refreshToken(): Observable<void> {
+    return this.http.get<{ token: string }>(`${this.baseURL}refresh`).pipe(
+      tap((res) => this.setToken(res.token)),
+      map(() => void 0)
+    );
   }
 
   getToken(): string | null {

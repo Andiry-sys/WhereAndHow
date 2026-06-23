@@ -2,6 +2,7 @@
 using Core.Domain.DTOs;
 using Core.Domain.Models;
 using Data.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -65,6 +66,23 @@ public class AuthenticateController(UserManager<User> userManager,SignInManager<
         var token = _authService.GetToken(authClaims.Claims.ToList());
 
 
+        return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = token });
+    }
+
+    [HttpGet]
+    [Route("refresh")]
+    [Authorize]
+    public async Task<IActionResult> RefreshToken()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = await _userManager.FindByIdAsync(userId!);
+        if (user == null)
+            return Unauthorized(new AuthResponseDto { ErrorMessage = "User not found" });
+
+        var authClaims = await _signInManager.CreateUserPrincipalAsync(user);
+        ((ClaimsIdentity)authClaims.Identity!).AddClaim(new Claim("IsLosser", user.IsLosser.ToString()));
+
+        var token = _authService.GetToken(authClaims.Claims.ToList());
         return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = token });
     }
 }

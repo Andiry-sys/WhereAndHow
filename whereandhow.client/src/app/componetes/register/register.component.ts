@@ -36,11 +36,7 @@ export class RegisterComponent implements OnInit {
       this.auth.register(this.registerForm.value).subscribe({
         next: () => {
           this.router.navigate(['']).then(() => this.registerForm.reset());
-        },
-        error: (err) => {
-          console.error('Registration error:', err);
-          alert('Реєстрація не вдалася');
-        },
+        }
       });
     }
   }

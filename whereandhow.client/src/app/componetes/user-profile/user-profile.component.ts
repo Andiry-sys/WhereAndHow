@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { User } from '../../Model/user';
+import { AuthService } from '../../services/auth.service';
 import { PartnerService } from '../../services/partner.service';
 import { UpdateUserprofileService } from '../../services/update-userprofile.service';
 
@@ -32,12 +33,20 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private userService: UpdateUserprofileService,
     private partnerService: PartnerService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.userService.getUser().subscribe((data) => {
       this.user = data;
+
+      // If the DB marks the user as a partner but the stored JWT doesn't reflect
+      // it yet (admin confirmed while user was already logged in), silently
+      // exchange the stale token for a fresh one so the entire UI updates now.
+      if (data.isLosser && !this.authService.isLosser()) {
+        this.authService.refreshToken().subscribe();
+      }
 
       this.profileForm.patchValue({
         name: data.name,

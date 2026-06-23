@@ -41,11 +41,7 @@ export class LoginComponent {
           if (this.auth.isLoggedIn()) {
             this.router.navigate(['']);
           }
-        },
-        error: (err: HttpErrorResponse) => {
-          console.error('Login error:', err);
-          alert('Помилка входу. Перевірте дані.');
-        },
+        }
       });
     }
 
